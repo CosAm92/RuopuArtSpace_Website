@@ -1,5 +1,5 @@
 {
-  "name": "RuopuArtSpace_Website",
+  "name": "ruopuartspace_website",
   "version": "1.0.0",
   "description": "Creation of a showcase website (PWA) for the NGO Ruopu Art Space.",
   "main": "server.js",
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/CosAm92/RuopuArtSpace_Website.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Amanda Dieuaide",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/CosAm92/RuopuArtSpace_Website/issues"
