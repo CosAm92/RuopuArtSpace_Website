@@ -1,10 +1,12 @@
-
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-
 const express = require('express')
 const app = express()
-const expressLayouts = require('express-ejs-layouts')
+
+app.get('/', (req,res) =>{
+    res.send('Hello World')
+})
+app.listen(5000)
+
+/*const expressLayouts = require('express-ejs-layouts')
 const port = 3000
 
 const indexRouter = require('./routes/index')
@@ -16,7 +18,5 @@ app.use(expressLayouts)
 app.use(express.static('public')) //Public referes to public files (CSS/JS/images files)
 
 app.use('/', indexRouter)
-//app.listen(process.env.PORT || 3000) //The server tells the PORT used, we put it at 3000
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-  })
+app.listen(process.env.PORT || 3000) //The server tells the PORT used, we put it at 3000
+*/
