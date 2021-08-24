@@ -1,0 +1,29 @@
+{
+  "name": "RuopuArtSpace_Website",
+  "version": "1.0.0",
+  "description": "Creation of a showcase website (PWA) for the NGO Ruopu Art Space.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "devStart": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CosAm92/RuopuArtSpace_Website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CosAm92/RuopuArtSpace_Website/issues"
+  },
+  "homepage": "https://github.com/CosAm92/RuopuArtSpace_Website#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
