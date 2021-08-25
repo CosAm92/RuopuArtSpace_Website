@@ -1,10 +1,12 @@
 const express = require('express')
 const mongoose = require('mongoose')
-//const expressLayouts = require('express-ejs-layouts')
+const methodOverride = require('method-override')
+const expressLayouts = require('express-ejs-layouts')
 
 const Article = require('./models/article')
 const articleRouter = require('./routes/articles')
-const methodOverride = require('method-override')
+const authorRouter = require('./routes/authors')
+
 const app = express()
 const port = 5001;
 
@@ -19,11 +21,10 @@ db.on('error', error => console.error(error))
 db.once('open', () => console.log('Connected to DB'))
 
 //const indexRouter = require('./routes/index')
-//app.set('views', __dirname+'/views') //Where are views are coming from
-//app.set('layout','layouts/layout') //No need to duplicated header/footer/duplicates HTML files
-//app.use(expressLayouts)
-//app.use(express.static('public')) //Public referes to public files (CSS/JS/images files)
-
+app.set('views', __dirname+'/views') //Where views are coming from
+app.set('layout','layouts/layout') //No need to duplicated header/footer/duplicates HTML files
+app.use(expressLayouts)
+app.use(express.static('public')) //Public referes to public files (CSS/JS/images files)
 app.set('view engine', 'ejs')
 
 app.use(express.urlencoded({extended:false})) //We can access the article new form through the router with req.body, needs to be before the app.use route
@@ -45,6 +46,7 @@ app.get('/', async (req,res) =>{
 })
 
 app.use('/articles', articleRouter) //Changes the route: we can look at articles in localhost:5001/articles/articleRouter
+app.use('/authors', authorRouter)
 
 app.listen(port, () => {
     console.log(`Now listening on port ${port}`);
