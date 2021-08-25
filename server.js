@@ -2,13 +2,17 @@ const express = require('express')
 const mongoose = require('mongoose')
 //const expressLayouts = require('express-ejs-layouts')
 
+const Article = require('./models/article')
 const articleRouter = require('./routes/articles')
+const methodOverride = require('method-override')
 const app = express()
 const port = 5001;
 
+//Connect to db and Get rid of deprecation warnings
 mongoose.connect('mongodb://localhost/blog', {
-    useNewUrlParser:true, //Get rid of deprecation warnings
-    useUnifiedTopology: true
+    useNewUrlParser:true, 
+    useUnifiedTopology: true,
+    useCreateIndex: true
 })
 const db = mongoose.connection
 db.on('error', error => console.error(error))
@@ -23,16 +27,20 @@ db.once('open', () => console.log('Connected to DB'))
 app.set('view engine', 'ejs')
 
 app.use(express.urlencoded({extended:false})) //We can access the article new form through the router with req.body, needs to be before the app.use route
+app.use(methodOverride('_method')) //If we path _method we can do more that GET/POST
 
-app.get('/', (req,res) =>{
-    const articles = [{
+app.get('/', async (req,res) =>{
+    const articles = await Article.find().sort({
+        createdAt: 'desc' //Top article = newest one
+    })
+    /*const articles = [{
         title: 'Article Title',
         author: 'Article author',
         createdAt: new Date(),
         updatedAt: new Date(),
         summary: 'Test summary/description',
         markdown: 'Content'
-    }]
+    }]*/
     res.render('articles/index', {articles: articles})
 })
 
