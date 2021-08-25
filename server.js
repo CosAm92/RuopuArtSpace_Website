@@ -1,9 +1,18 @@
-const express = require('express');
+const express = require('express')
+const mongoose = require('mongoose')
 //const expressLayouts = require('express-ejs-layouts')
 
-const articleRouter = require('./routes/articles');
-const app = express();
+const articleRouter = require('./routes/articles')
+const app = express()
 const port = 5001;
+
+mongoose.connect('mongodb://localhost/blog', {
+    useNewUrlParser:true, //Get rid of deprecation warnings
+    useUnifiedTopology: true
+})
+const db = mongoose.connection
+db.on('error', error => console.error(error))
+db.once('open', () => console.log('Connected to DB'))
 
 //const indexRouter = require('./routes/index')
 //app.set('views', __dirname+'/views') //Where are views are coming from
@@ -13,11 +22,21 @@ const port = 5001;
 
 app.set('view engine', 'ejs')
 
-app.use('/articles', articleRouter) //Changes the route: we can look at articles in localhost:5001/articles/articleRouter
+app.use(express.urlencoded({extended:false})) //We can access the article new form through the router with req.body, needs to be before the app.use route
 
 app.get('/', (req,res) =>{
-    res.render('index', {text: 'articles'})
+    const articles = [{
+        title: 'Article Title',
+        author: 'Article author',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        summary: 'Test summary/description',
+        markdown: 'Content'
+    }]
+    res.render('articles/index', {articles: articles})
 })
+
+app.use('/articles', articleRouter) //Changes the route: we can look at articles in localhost:5001/articles/articleRouter
 
 app.listen(port, () => {
     console.log(`Now listening on port ${port}`);
