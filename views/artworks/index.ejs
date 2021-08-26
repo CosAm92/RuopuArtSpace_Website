@@ -1,0 +1,30 @@
+<div class="container">
+    <h2>Search Artworks</h2>
+    <form action="/artworks" method="GET">
+        <label>Title</label>
+        <div class="input-group">
+            <input type="text" name="title" class="form-control rounded" value="<%= searchOptions.title %>">
+        </div>
+        <label>Created At</label>
+        <div class="input-group">
+            <input type="date" name="createdAt" class="form-control rounded" value="<%= searchOptions.createdAt %>">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-outline-primary">Search</button>
+    </form>
+
+    <br>
+    <div class="d-flex justify-content-around flex-wrap-reverse">
+        <% artworks.forEach(artwork=> { %>
+            <div class="card" style="width: 18rem; margin-top: 2rem;">
+                <img class="card-img-top" src="<%= artwork.artworkImagePath %>" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= artwork.title %>
+                    </h5>
+                </div>
+            </div>
+            <br>
+            <% }) %>
+    </div>
+</div>

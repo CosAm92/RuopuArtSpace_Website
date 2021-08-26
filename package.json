@@ -27,6 +27,7 @@
     "marked": "^3.0.2",
     "method-override": "^3.0.0",
     "mongoose": "^5.13.8",
+    "multer": "^1.4.3",
     "slugify": "^1.6.0"
   },
   "devDependencies": {

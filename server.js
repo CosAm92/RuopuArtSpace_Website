@@ -6,6 +6,7 @@ const expressLayouts = require('express-ejs-layouts')
 const Article = require('./models/article')
 const articleRouter = require('./routes/articles')
 const authorRouter = require('./routes/authors')
+const artworkRouter = require('./routes/artworks')
 
 const app = express()
 const port = 5001;
@@ -34,19 +35,12 @@ app.get('/', async (req,res) =>{
     const articles = await Article.find().sort({
         createdAt: 'desc' //Top article = newest one
     })
-    /*const articles = [{
-        title: 'Article Title',
-        author: 'Article author',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        summary: 'Test summary/description',
-        markdown: 'Content'
-    }]*/
     res.render('articles/index', {articles: articles})
 })
 
 app.use('/articles', articleRouter) //Changes the route: we can look at articles in localhost:5001/articles/articleRouter
 app.use('/authors', authorRouter)
+app.use('/artworks', artworkRouter)
 
 app.listen(port, () => {
     console.log(`Now listening on port ${port}`);

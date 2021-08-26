@@ -1,0 +1,37 @@
+<div class="form-group">
+    <div>
+        <label for="title">Title</label>
+        <input required value="<%= artwork.title %>" type="text" name="title" id="title" class="form-control">
+    </div>
+    <div>
+        <br>
+        <label for="author">Author</label>
+        <select name="author">
+            <% authors.forEach(author=> { %>
+                <% if(author.id==artwork.author){%>
+                    <option selected label="<%= author.name %>" value="<%= author.id %>"></option>
+                    <% } else { %>
+                        <option label="<%= author.name %>" value="<%= author.id %>"></option>
+                        <% } %>
+                            <% }) %>
+        </select>
+    </div>
+    <div>
+        <label for="createdAt">Creation date</label>
+        <input value="<%= artwork.createdAt == null ? '' : artwork.createdAt.toISOString().split('T')[0] %>" type="date"
+            name="createdAt" id="createdAt" class="form-control">
+        <!--We want a date, not a time: if date is not null -> split YEAR-MM-DDTHH:MM at the T character-->
+    </div>
+    <div>
+        <label for="image">Image</label>
+        <input type="file" name="image" id="image" class="form-control">
+        <!--File inputs can't have a value-->
+    </div>
+    <div>
+        <label for="content">Content</label>
+        <textarea class="form-control" name="content"><%= artwork.content %></textarea>
+    </div>
+</div>
+
+<a href="/artworks" class="btn btn-secondary">Cancel</a>
+<button type="submit" class="btn btn-primary">Add</button>
