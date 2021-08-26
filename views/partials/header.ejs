@@ -1,12 +1,48 @@
 <header>
-    <nav>
-        <a href="/">Ruopu Art Space</a>
-        <ul>
-            <li><a href="/authors">Authors</a></li>
-            <li><a href="/authors/new">Add Authors</a></li>
-            <li><a href="/articles/show">Articles</a></li>
-            <li><a href="/artworks">Art Gallery</a></li>
-            <li><a href="/artworks/new">Add Artworks</a></li>
-        </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="/*background-color: #3B372C;*/">
+        <a class="navbar-brand" href="/">Ruopu Art Space</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/authors">Authors</a></li>
+                <li class="nav-item"><a class="nav-link" href="/authors/new">Add Authors</a></li>
+                <li class="nav-item"><a class="nav-link" href="/articles">Events</a></li>
+                <li class="nav-item"><a class="nav-link" href="/artworks">Gallery</a></li>
+                <li class="nav-item"><a class="nav-link" href="/artworks/new">Add Artworks</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        About Ruopu
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#">The Team</a>
+                        <a class="dropdown-item" href="#">Our values</a>
+                        <a class="dropdown-item" href="#">Main projects...</a>
+                    </div>
+                </li>
+            </ul>
+
+            <form class="form-inline align-right">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-warning my-2 my-sm-0" type="submit"
+                    style="/*background-color: #E4AF56; color: whitesmoke;*/">Search</button>
+            </form>
+
+            <a class="btn btn-dark" href="#!" role="button">
+                <i class="fa fa-weixin"></i></a>
+            <a class="btn btn-dark" href="#!" role="button">
+                <i class="fa fa-twitter"></i></a>
+            <a class="btn btn-dark" href="#!" role="button">
+                <i class="fa fa-instagram"></i></a>
+            <a class="btn btn-dark" href="#!" role="button">
+                <i class="fa fa-linkedin"></i></a>
+
+        </div>
     </nav>
 </header>
+<br>

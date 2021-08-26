@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const expressLayouts = require('express-ejs-layouts')
 
-const Article = require('./models/article')
+const indexRouter = require('./routes/index')
 const articleRouter = require('./routes/articles')
 const authorRouter = require('./routes/authors')
 const artworkRouter = require('./routes/artworks')
@@ -21,7 +21,6 @@ const db = mongoose.connection
 db.on('error', error => console.error(error))
 db.once('open', () => console.log('Connected to DB'))
 
-//const indexRouter = require('./routes/index')
 app.set('views', __dirname+'/views') //Where views are coming from
 app.set('layout','layouts/layout') //No need to duplicated header/footer/duplicates HTML files
 app.use(expressLayouts)
@@ -31,11 +30,8 @@ app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended:false})) //We can access the article new form through the router with req.body, needs to be before the app.use route
 app.use(methodOverride('_method')) //If we path _method we can do more that GET/POST
 
-app.get('/', async (req,res) =>{
-    const articles = await Article.find().sort({
-        createdAt: 'desc' //Top article = newest one
-    })
-    res.render('articles/index', {articles: articles})
+app.get('/', (req, res) => {
+    res.render('index')
 })
 
 app.use('/articles', articleRouter) //Changes the route: we can look at articles in localhost:5001/articles/articleRouter

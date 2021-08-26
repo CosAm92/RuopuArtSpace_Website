@@ -2,10 +2,18 @@ const express = require('express') //Import librairy
 const Article = require('./../models/article')
 const router = express.Router() //Gives us a router to create views
 
+//Show all articles
+router.get('/', async (req,res) =>{
+    const articles = await Article.find().sort({
+        createdAt: 'desc' //Top article = newest one
+    })
+    res.render('articles/index', {articles: articles})
+})
+
 //Go to Create Form
 router.get('/new', (req, res) => {
     res.render("articles/new", { article: new Article() })
-})
+}) 
 
 //Go to Edit Form
 router.get('/edit/:id', async (req, res) => {
@@ -18,7 +26,7 @@ router.get('/:slug', async (req, res) => {
     const article = await Article.findOne({
         slug: req.params.slug
     }) //We await/wait for the article before executing function
-    if (article == null) res.redirect('/') //If no articles are found, redirect to HomePage
+    if (article == null) res.redirect('/articles') //If no articles are found, redirect to Articles
     res.render('articles/show', { article: article })
 })
 
@@ -37,7 +45,7 @@ router.put('/:id', async (req, res, next) => {
 //Delete an Article
 router.delete('/:id', async (req, res) => {
     await Article.findByIdAndDelete(req.params.id)
-    res.redirect('/')
+    res.redirect('/articles')
 })
 
 //Request/Response function
@@ -54,7 +62,7 @@ function saveArticleAndRedirect(path) {
             await article.save()
             res.redirect(`/articles/${article.slug}`) //Redirection to slug url if the article is not new
         } catch (e) {
-            res.render(`articles/${path}`, { article: article })
+            res.render(`/articles/${path}`, { article: article })
         }
     }
 }
