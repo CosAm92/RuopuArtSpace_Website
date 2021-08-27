@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
         const artworks = await query.exec()
         res.render('artworks/index', {
             artworks: artworks,
-            searchOptions: req.query
+            searchOptions: req.query,
         })
     } catch {
         res.redirect('/')
