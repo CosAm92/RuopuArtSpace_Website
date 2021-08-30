@@ -1,4 +1,26 @@
-<div class="container">
-    <h2 class="mb-4"><%= artwork.title %></h2>
-    <img src="<%= artwork.artworkImagePath%>">
+<div class="container container-fluid">
+
+    <div class="row">
+        <div class="card">
+            <div class="row card-body justify-content-center">
+                <div style="object-fit: cover; max-width: 40rem;"> <!--object-fit zooms in instead of stretching-->               
+                    <img class="col" src="<%= artwork.artworkImagePath%>" alt="artwork" />
+                </div>
+                    <div class="col text-center">
+                    <h2>
+                        <%= artwork.title %> by <%= artwork.author.name %>
+                    </h2>
+                    <h6><%= artwork.createdAt.toLocaleDateString() %></h6>
+                    <h4>Theme/Category</h4>
+                    <p><%= artwork.theme%></p>
+                    <h4>Content</h4>
+                    <p><%= artwork.content%></p>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi amet quis
+                        possimus et aperiam quo quasi quos ad, nisi labore ipsum, recusandae, saepe laborum rem.
+                        Assumenda sunt corrupti iure animi.</p>
+                </div>
+                
+            </div>
+        </div>
+    </div>
 </div>
