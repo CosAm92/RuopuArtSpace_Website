@@ -1,4 +1,34 @@
 <div class="container">
     <h1>Home Page</h1>
     Under construction
+
+    <!--Latest News: Shows the 3 most recent articles-->
+    </h1>
+
+    <h2 class="text-center">Last News</h2>
+    <div class="d-flex justify-content-center flex-wrap">
+        <% articles.forEach(article=> { %>
+            <div class="card mt-4" style="width: 18rem; margin: 2rem;">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <%= article.title %>
+                    </h4>
+                    <div class="card-subtitle text-muted mb-2">
+                        <%= article.createdAt.toLocaleDateString() %>
+                    </div>
+                    <div class="card-ext mb-2">
+                        <%= article.summary %>
+                    </div>
+                    <a href="articles/<%= article.slug %>" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+            <% }) %>
+    </div>
+
+    <h2 class="text-center">Meet the Team</h2>
+        <div class="d-flex justify-content-center flex-wrap">
+            <% authors.forEach(author=>{ %>
+                <%= author.name %>
+                    <% }) %>
+        </div>
 </div>

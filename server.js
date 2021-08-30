@@ -30,10 +30,11 @@ app.set('view engine', 'ejs')
 app.use(express.urlencoded({extended:false})) //We can access the article new form through the router with req.body, needs to be before the app.use route
 app.use(methodOverride('_method')) //If we path _method we can do more that GET/POST
 
-app.get('/', (req, res) => {
+/*app.get('/', (req, res) => {
     res.render('index')
-})
+})*/
 
+app.use('/', indexRouter)
 app.use('/articles', articleRouter) //Changes the route: we can look at articles in localhost:5001/articles/articleRouter
 app.use('/authors', authorRouter)
 app.use('/artworks', artworkRouter)

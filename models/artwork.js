@@ -22,6 +22,10 @@ const artworkSchema = new mongoose.Schema({
     image: {
         type: String,
         required: true
+    },
+    theme: {
+        type: String //TODO: change to array of Tags with Tag a predetermined object that can be modified (like author)
+        //1 theme = 1 color
     }
 })
 

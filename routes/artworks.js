@@ -65,6 +65,17 @@ router.post('/', upload.single('image'), async (req, res) => { //The library mul
     }
 })
 
+//Show info
+router.get('/:id', async (req, res) => {
+    try{
+        const artwork = await Artwork.findById(req.params.id)
+        .populate('author').exec() //populate makes the id the full object
+        res.render('artworks/show', {artwork: artwork})
+    } catch {
+        res.redirect('/')
+    }
+})
+
 //Show error to dev
 function removeArtworkImage(fileName){
     fs.unlink(path.join(uploadPath, fileName), err => {

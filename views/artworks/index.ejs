@@ -17,7 +17,9 @@
     <div class="d-flex justify-content-center flex-wrap-reverse">
         <% artworks.forEach(artwork=> { %>
             <div class="card" style="width: 18rem; margin: 2rem;">
-                <img class="card-img-top" src="<%= artwork.artworkImagePath %>" alt="Card image cap">
+                <a href="/artworks/<%= artwork.id%>">
+                    <img class="card-img-top" src="<%= artwork.artworkImagePath %>" alt="Card image cap">
+                </a>
                 <div class="card-body">
                     <h5 class="card-title">
                         <%= artwork.title %>
