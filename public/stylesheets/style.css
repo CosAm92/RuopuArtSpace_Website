@@ -1,0 +1,9 @@
+@import 'shared/variables.css'; /*Learn how to use variables in CSS to easily change the theme of the site can be useful*/
+
+.card-text {
+    color: var(--ruopu--theme-dark);
+}
+
+.card-body {
+    /*background-color: var(--ruopu-gold);*/
+}

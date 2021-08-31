@@ -55,8 +55,7 @@ router.post('/', upload.single('image'), async (req, res) => { //The library mul
     //Save artwork
     try {
         const newArtwork = await artwork.save()
-        //res.redirect(`artworks/${newArtwork.id}`)
-        res.redirect('artworks')
+        res.redirect(`artworks/${newArtwork.id}`)
     } catch {
         if(artwork.image != null){
             removeArtworkImage(artwork.image)
@@ -76,6 +75,60 @@ router.get('/:id', async (req, res) => {
     }
 })
 
+//Edit Artwork figcaption
+router.get('/:id/edit', async (req,res) => {
+    try{
+        const artwork = await Artwork.findById(req.params.id)
+        renderEditPage(res, artwork)
+    } catch {
+        res.redirect('/')
+    }
+})
+
+//Update artwork route
+router.put('/:id', upload.single('image'), async (req, res) => { 
+    let artwork
+    //Save artwork
+    try {
+        artwork = await Artwork.findById(req.params.id)
+        artwork.title = req.body.titleartwork.author = req.body.author
+        artwork.createdAt = new Date(req.body.createdAt)
+        artwork.content = req.body.content
+        if(req.body.image != null && req.body.image !== ''){
+            //saveCover(artwork, req.body.image)
+        }
+        await artwork.save()
+        res.redirect(`/artworks/${artwork.id}`)
+    } catch (err) {
+        console.log(err)
+        if(artwork != null){
+            renderEditPage(res, artwork, true)
+        } else {
+            res.redirect('/')
+        }   
+    }
+})
+
+router.delete('/:id', async (req,res) => {
+    let artwork
+    try{
+        artwork = await Artwork.findById(req.params.id)
+        //TODO: use fs unlink path to image to remove image 
+        await artwork.remove()
+        res.redirect('/artworks')
+    } catch {
+        if(artworks != null) //If the artwork exist
+        {
+            res.render('artworks/show', {
+                artwork: artwork,
+                errorMessage: 'Could not delete artwork'
+            })
+        } else {
+            res.redirect('/')
+        }
+    }
+})
+
 //Show error to dev
 function removeArtworkImage(fileName){
     fs.unlink(path.join(uploadPath, fileName), err => {
@@ -84,14 +137,29 @@ function removeArtworkImage(fileName){
 }
 
 async function renderNewPage(res, artwork, hasError = false){ //res to render/redirect, artwork = new or existing one
+    renderFormPage(res, artwork, 'new', hasError)
+}
+
+async function renderEditPage(res, artwork, hasError=false){
+    renderFormPage(res, artwork, 'edit', hasError)
+}
+
+//Optimization to avoid duplicating code for New/Edit
+async function renderFormPage(res, artwork, form, hasError = false){ //res to render/redirect, artwork = new or existing one
     try {
         const authors = await Author.find({})
         const params = {
             authors: authors,
             artwork: artwork
         }
-        if(hasError) params.errorMessage = 'Error Creating Artwork'
-        res.render('artworks/new', params)
+        if(hasError){
+            if(form === 'edit'){
+                params.errorMessage = 'Error Editing Artwork'
+            }
+        } else {
+            params.errorMessage = 'Error Creating Artwork'
+        }
+        res.render(`artworks/${form}`, params)
     } catch {
         res.redirect('/artworks')
     }

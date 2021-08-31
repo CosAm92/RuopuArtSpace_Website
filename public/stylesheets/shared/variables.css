@@ -1,0 +1,11 @@
+/*Graphical charter*/
+:root{
+    --ruopu-dark: #3B372C;
+    --ruopu-gold: #E4AF56;
+    --ruopu-base: #A17238;
+    --ruopu-teal: #7DD2C1;
+    --ruopu-coral: #DE6049;
+    --ruopu-theme-light: hsl(var(--ruopu-base), 100%, 20%);
+    --ruopu--theme-dark: hsl(var(--ruopu-base), 100%, 8%);
+    --ruopu-text-hue: hsl(var(--ruopu-base), 100%, 90%);
+}

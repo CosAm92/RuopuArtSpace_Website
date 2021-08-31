@@ -18,8 +18,10 @@
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi amet quis
                         possimus et aperiam quo quasi quos ad, nisi labore ipsum, recusandae, saepe laborum rem.
                         Assumenda sunt corrupti iure animi.</p>
+                        <a href="/artworks/<%=artwork.id%>/edit" class="btn btn-secondary">Edit</a>
+                <%- include('../partials/deleteForm', {url: `/artworks/${artwork.id}`}) %> 
+                <a href="/artworks/<%=artwork.author.id%>" class="btn btn-primary">TODO: Go to Theme</a>
                 </div>
-                
             </div>
         </div>
     </div>
