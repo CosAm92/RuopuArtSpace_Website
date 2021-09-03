@@ -1,5 +1,5 @@
 if(process.env.NODE_ENV !== 'production'){
-    require('dotenv').config();
+    require('dotenv').config(); //parse and load are depreciated
 }
 //Only load in the environment variable if we're in production
 
@@ -14,10 +14,10 @@ const authorRouter = require('./routes/authors')
 const artworkRouter = require('./routes/artworks')
 
 const app = express()
-const port = 5001;
+const port = process.env.PORT || 5001;//5001
 
 //Connect to db and Get rid of deprecation warnings
-mongoose.connect(process.env.DATABASE_URL, { //process.env.DATABASE_URL "mongodb://localhost/blog"
+mongoose.connect(process.env.DATABASE_URL, { 
     useNewUrlParser:true, 
     useUnifiedTopology: true,
     useCreateIndex: true
