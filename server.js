@@ -14,7 +14,7 @@ const authorRouter = require('./routes/authors')
 const artworkRouter = require('./routes/artworks')
 
 const app = express()
-const port = process.env.PORT || 5001;//5001
+const port = process.env.PORT || 5001;
 
 //Connect to db and Get rid of deprecation warnings
 mongoose.connect(process.env.DATABASE_URL, { 
@@ -32,7 +32,8 @@ app.use(expressLayouts)
 app.use(express.static('public')) //Public referes to public files (CSS/JS/images files)
 app.set('view engine', 'ejs')
 
-app.use(express.urlencoded({extended:false})) //We can access the article new form through the router with req.body, needs to be before the app.use route
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb', extended: true})) //We can access the article new form through the router with req.body, needs to be before the app.use route, edit:  extended:false
 app.use(methodOverride('_method')) //If we path _method we can do more that GET/POST
 
 /*app.get('/', (req, res) => {
