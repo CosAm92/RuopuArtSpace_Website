@@ -1,3 +1,8 @@
+if(process.env.NODE_ENV !== 'production'){
+    require('dotenv').config();
+}
+//Only load in the environment variable if we're in production
+
 const express = require('express')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
@@ -12,7 +17,7 @@ const app = express()
 const port = 5001;
 
 //Connect to db and Get rid of deprecation warnings
-mongoose.connect('mongodb://localhost/blog', {
+mongoose.connect(process.env.DATABASE_URL, { //process.env.DATABASE_URL "mongodb://localhost/blog"
     useNewUrlParser:true, 
     useUnifiedTopology: true,
     useCreateIndex: true
