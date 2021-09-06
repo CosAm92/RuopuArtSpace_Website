@@ -1,10 +1,19 @@
+<section>
+    <h1 id="text" style="top: 0;">Ruopu Art Space</h1>
+    <img src="/images/watercolor2.png" id="wc2">
+    <img style="width: 20rem; height: 18rem; border-radius: 10rem;" src="/images/watercolor3.jpg" id="wc3">
+    <img style="width: 20rem; height: 18rem; border-radius: 10rem;" src="/images/watercolor1.jpg" id="wc1">
+    <img style="width: 20rem; height: 18rem; border-radius: 10rem;" src="/images/girl.jpg" id="girl">
+    <div class="text-align left" id="text2">
+        <h3>Our Mission/Values</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni quia cupiditate aliquid aut incidunt
+            alias dolore quos doloribus.</p>
+        <a id="btn" href="#" class="btn btn-primary">Learn More</a>
+    </div>
+</section>
+
 <div class="container">
-    <h1>Home Page</h1>
-    Under construction
-
     <!--Latest News: Shows the 3 most recent articles-->
-    </h1>
-
     <h2 class="text-center">Last News</h2>
     <div class="d-flex justify-content-center flex-wrap">
         <% articles.forEach(article=> { %>
@@ -24,11 +33,60 @@
             </div>
             <% }) %>
     </div>
-
-    <h2 class="text-center">Meet the Team</h2>
-        <div class="d-flex justify-content-center flex-wrap">
-            <% authors.forEach(author=>{ %>
-                <%= author.name %>
-                    <% }) %>
-        </div>
 </div>
+
+<!--
+<section>
+    <h1 id="text" style="top: 0;">Art is for Everyone</h1>
+    <img style="width: 10rem; height: 9rem; top: 10rem; left:10rem;" src="/images/watercolor2.png">
+    <img style="width: 10rem; height: 9rem; right: 10rem;" src="/images/watercolor3.jpg">
+    <img style="width: 10rem; height: 15rem; top: 20rem;" src="/images/watercolor1.jpg">
+    <img style="width: 20rem; height: 9rem; left: 10rem;" src="/images/girl.jpg">
+    <div>
+        <h3>Lorem ipsum</h3>
+        <p> dolor sit amet, consectetur adipisicing elit. Magni quia cupiditate aliquid aut incidunt
+            alias dolore quos doloribus.</p>
+    </div>
+    <div>
+        <h3>Lorem ipsum</h3>
+        <p> dolor sit amet, consectetur adipisicing elit. Magni quia cupiditate aliquid aut incidunt
+            alias dolore quos doloribus.</p>
+    </div>
+    <div>
+        <h3>Lorem ipsum</h3>
+        <p> dolor sit amet, consectetur adipisicing elit. Magni quia cupiditate aliquid aut incidunt
+            alias dolore quos doloribus.</p>
+    </div>
+    <a id="btn" href="artworks" class="btn btn-primary">See Gallery</a>
+</section>
+-->
+
+<div class="container">
+    <h2 class="text-center">Meet the Team</h2>
+    <div class="d-flex justify-content-center flex-wrap">
+        <% authors.forEach(author=>{ %>
+            <%= author.name %>
+                <% }) %>
+    </div>
+</div>
+
+<script>
+    let wc2 = document.getElementById('wc2');
+    let wc1 = document.getElementById('wc1');
+    let wc3 = document.getElementById('wc3');
+    let girl = document.getElementById('girl');
+    let text = document.getElementById('text');
+    let text2 = document.getElementById('text2');
+    let btn = document.getElementById('btn');
+
+    window.addEventListener('scroll', function () {
+        let value = window.scrollY;
+        wc2.style.top = value*0.5 + 'px';
+        wc3.style.left = value + 'px';
+        girl.style.left = value + 'px';
+        girl.style.top = value + 'px';
+        wc1.style.top = value * 1.5 + 'px';
+        text.style.marginTop = value * 0.75 + 'px';
+        text2.style.marginLeft = value * 2 + 'px';
+    })
+</script>
