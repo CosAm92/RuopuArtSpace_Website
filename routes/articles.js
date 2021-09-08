@@ -2,6 +2,11 @@ const express = require('express') //Import librairy
 const Article = require('./../models/article')
 const router = express.Router() //Gives us a router to create views
 
+//Oath
+const {ROLE, users} = require('../data')
+const {authUser, authRole} = require('../basicAuth')
+const {canCreateArticle, canDeleteArticle, scopedArticles} = require('../permissions/article.js')
+
 //Show all articles
 router.get('/', async (req,res) =>{
     const articles = await Article.find().sort({
@@ -11,7 +16,7 @@ router.get('/', async (req,res) =>{
 })
 
 //Go to Create Form
-router.get('/new', (req, res) => {
+router.get('/new', authUser, authCreateArticle, (req, res) => {
     res.render("articles/new", { article: new Article() })
 }) 
 
@@ -31,19 +36,19 @@ router.get('/:slug', async (req, res) => {
 })
 
 //Create new Article
-router.post('/', async (req, res, next) => { //Get POST from new.ejs form and save to db
+router.post('/', authUser, async (req, res, next) => { //Get POST from new.ejs form and save to db
     req.article = new Article()
     next() //Go to the next function
 }, saveArticleAndRedirect('new'))
 
 //Edit an Article
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', authUser, async (req, res, next) => {
     req.article = await Article.findById(req.params.id)
     next() //Go to the next function
 }, saveArticleAndRedirect('new'))
 
 //Delete an Article
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authUser, authDeleteArticle, async (req, res) => {
     await Article.findByIdAndDelete(req.params.id)
     res.redirect('/articles')
 })
@@ -65,6 +70,23 @@ function saveArticleAndRedirect(path) {
             res.render(`/articles/${path}`, { article: article })
         }
     }
+}
+
+//Oath functions/middleware
+function authCreateArticle(req, res, next) {
+    if(!canCreateArticle(req.user, req.article)){
+        res.status(401)
+        return res.send('Not Allowed')
+    }
+    next()
+}
+
+function authDeleteArticle(req, res, next) {
+    if(!canDeleteArticle(req.user, req.article)){
+        res.status(401)
+        return res.send('Not Allowed')
+    }
+    next()
 }
 
 module.exports = router //We can read this router everywhere

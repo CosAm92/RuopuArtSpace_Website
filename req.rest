@@ -1,0 +1,11 @@
+GET http://localhost:5001/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQW1hbmRhIiwiaWF0IjoxNjMxMTMwNzkwfQ.UCyDZ8wU7L_JabcQGoXmh2iOQ0z44tQDtXk5YCaag7Y
+
+###
+
+POST http://localhost:5001/login
+Content-Type: application/json
+
+{
+    "username": "Amanda"
+}
