@@ -7,15 +7,16 @@ const express = require('express')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const expressLayouts = require('express-ejs-layouts')
-const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 const indexRouter = require('./routes/index')
+const authRouter = require('./routes/auth')
 const articleRouter = require('./routes/articles')
 const authorRouter = require('./routes/authors')
 const artworkRouter = require('./routes/artworks')
 
 const app = express()
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 6001;
 
 //Connect to db and Get rid of deprecation warnings
 mongoose.connect(process.env.DATABASE_URL, {
@@ -45,6 +46,7 @@ app.use('/', indexRouter)
 app.use('/articles', articleRouter) //Changes the route: we can look at articles in localhost:5001/articles/articleRouter
 app.use('/authors', authorRouter)
 app.use('/artworks', artworkRouter)
+app.use('/auth', authRouter)
 
 //Auth test
 const posts = [
@@ -57,22 +59,6 @@ const posts = [
         title: 'Test2'
     }
 ]
-
-app.get('/posts', authenticateToken, (req, res) => {
-    res.json(posts.filter(post => post.username === req.user.name))
-})
-
-function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1] //Token is token or undefined
-    if (token == null) return res.sendStatus(401)
-
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403)
-        req.user = user //Valid token -> create user object
-        next()
-    })
-}
 
 //--
 app.listen(port, 'localhost', () => {

@@ -15,7 +15,7 @@ const authorRouter = require('./routes/authors')
 const artworkRouter = require('./routes/artworks')
 
 const app = express()
-const port = process.env.PORT || 5001;
+const port = process.env.PORT || 4001;
 
 //Connect to db and Get rid of deprecation warnings
 mongoose.connect(process.env.DATABASE_URL, {
@@ -46,32 +46,38 @@ app.use('/articles', articleRouter) //Changes the route: we can look at articles
 app.use('/authors', authorRouter)
 app.use('/artworks', artworkRouter)
 
-//Auth test
-const posts = [
-    {
-        username: 'Amanda',
-        title: 'Test'
-    },
-    {
-        username: 'Visitor',
-        title: 'Test2'
-    }
-]
+//JWT Auth test
+let refreshTokens = [] //TODO: change to a db when possible
 
-app.get('/posts', authenticateToken, (req, res) => {
-    res.json(posts.filter(post => post.username === req.user.name))
+app.post('/token', (req, res) => {
+    const refreshToken = req.body.token
+    if(refreshToken == null) return res.sendStatus(401)
+    if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403) //Check if refresh token was used
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+        if(err) return res.sendStatus(403)
+        const accessToken = generateAccessToken({name: user.name})
+        res.json({accessToken: accessToken})
+    })
 })
 
-function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1] //Token is token or undefined
-    if (token == null) return res.sendStatus(401)
+app.delete('/logout', (req, res) => {
+    refreshTokens = refreshTokens.filter(token => token !== req.body.token)
+    res.sendStatus(204)
+  })
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403)
-        req.user = user //Valid token -> create user object
-        next()
-    })
+app.post('/login', (req, res) => {
+    //Auth
+    const username = req.body.username
+    const user = { name: username }
+
+    const accessToken = generateAccessToken(user)
+    const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+    refreshTokens.push(refreshToken)
+    res.json({ accessToken: accessToken, refreshToken: refreshToken }) //accessToken saves the user's infos
+})
+
+function generateAccessToken(user){
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1min'})
 }
 
 //--
