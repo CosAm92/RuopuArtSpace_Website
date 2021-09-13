@@ -18,3 +18,8 @@ Content-Type: application/json
 {
     "username": "Amanda"
 }
+
+###
+
+GET http://localhost:6001/authors
+Authorization: Bearer

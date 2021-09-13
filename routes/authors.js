@@ -2,6 +2,9 @@ const express = require('express') //Import librairy
 const router = express.Router() //Gives us a router to create views
 const Author = require('../models/author')
 
+//Oath
+const auth = require('../permissions/auth')
+
 //Show all authors
 router.get('/', async (req, res) => {
     let searchOptions = {}
@@ -19,8 +22,8 @@ router.get('/', async (req, res) => {
     }
 })
 
-//New author route
-router.get('/new', (req, res) => {
+//New author route + Oath
+router.get('/new', auth, (req, res) => {
     res.render("authors/new", { author: new Author() })
 })
 
