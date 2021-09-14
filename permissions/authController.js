@@ -49,10 +49,12 @@ const login = (req, res, next) =>  {
                 //If passwords match, create token and redirect to homepage
                 if(result){
                     let token = jwt.sign({pseudo: user.pseudo}, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1h'})
-                    res.json({
-                        message: token
-                    })
-                    //res.redirect('/')
+                    /*res.json({
+                        message: 'Login successful',
+                        token: token
+                    })*/
+                    res.set('Authorization', `Bearer ${token}`)
+                    res.redirect('/')
                 } else {
                     res.json({
                         message: 'Password is wrong'
