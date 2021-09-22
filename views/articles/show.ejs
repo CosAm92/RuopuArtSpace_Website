@@ -12,8 +12,43 @@
         Edit
     </a>
 
-    <div>
+    <!--Article-->
+    <div class="lead text-justify">
         <%- article.sanitizedHTML %>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Enim exercitationem numquam aperiam impedit
+            tenetur illum sapiente nobis saepe a ipsum, asperiores minima, harum distinctio fugiat eius, sit ex quia
+            alias?
     </div>
 
+    <!--Comment section-->
+    <div class="card my-4">
+        <h4 class="card-header">Leave a Comment:</h4>
+        <div class="card-body">
+            <form method="POST" action="/comments">
+                <div class="form-group">
+                    <textarea class="form-control" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!--Single Comment-->
+    <div class="media mb-4">
+        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="pp">
+        <div class="media-body">
+            <h4 class="mt-0">User Name</h4>
+            <%= article.comments.forEach(comment => {
+                comment.content
+            }); %>
+
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident a voluptatibus, maiores
+                        delectus voluptates officiis necessitatibus tempore perferendis distinctio dolore esse iusto
+                        aliquid ratione consequuntur officia in sequi repellendus quos.
+        </div>
+    </div>
+
+
+
+    <!--Nested Comments-->
 </div>

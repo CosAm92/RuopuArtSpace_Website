@@ -4,6 +4,7 @@ const slugify = require('slugify')
 const createDomPurify = require('dompurify')
 const{JSDOM} = require('jsdom') //put in {} cuz we only want the JSDOM portion of the library
 const dompurify = createDomPurify(new JSDOM().window) //dompurify creates HTML which is purified by the JSDOM object
+const Comment = require('./comment')
 
 const articleSchema = new mongoose.Schema({
     title: {
@@ -17,6 +18,12 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    comments:[ //Array of comments 
+        {
+            type: mongoose.Schema.Types.ObjectId, 
+            ref: 'Comment'
+        }
+    ],
     createdAt: {
         type: Date,
         default: Date.now
