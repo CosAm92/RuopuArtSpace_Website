@@ -1,6 +1,7 @@
 const express = require('express') //Import librairy
-const Article = require('./../models/article')
-const Comment = require('./../models/comment')
+const Article = require('../models/article')
+const User = require('../models/user')
+const Comment = require('../models/comment')
 const router = express.Router() //Gives us a router to create views
 
 //ARTICLES
@@ -23,11 +24,24 @@ router.get('/edit/:id', async (req, res) => {
     res.render("articles/edit", { article: article })
 })
 
-//Show an Article
+//Show an Article + its Comments
 router.get('/:slug', async (req, res) => {
     const article = await Article.findOne({
         slug: req.params.slug
-    }).populate('comments').exec() //We await/wait for the article before executing function
+    }).
+    populate({
+        path : 'comments',
+        populate: {
+            path: 'author',
+            select: 'pseudo -_id', //exclude id
+        }
+      }).
+      populate({
+        path : 'comments',
+        populate : {
+            path : 'replies'
+        }
+      }).exec() //We await/wait for the article before executing function
 
     if (article == null) res.redirect('/articles') //If no articles are found, redirect to Articles
     res.render('articles/show', { article: article })
@@ -54,44 +68,87 @@ router.delete('/:id', async (req, res) => {
 
 //COMMENTS
 //Create a comment route
-router.post('/:id/comment', async(req, res) => {
-    const article = await Article.findOne({_id: req.params.id});
+router.post('/:slug', async(req, res) => {
+    const article = await Article.findOne({
+        slug: req.params.slug
+    }).
+    populate('comments').exec()
 
     const comment = new Comment({
+        author: '613f7f62cb162826bc77ae14', //PLACEHOLDER -> CHANGE WHEN LOGIN/REGISTER CREATED
         content: req.body.content,
-        createdAt: new Date(req.body.createdAt),
+        //createdAt: new Date(req.body.createdAt),
         article: article._id
     });
-    comment.save()
+    await comment.save()
 
     //Associate Article with Comment
     article.comments.push(comment)
-    article.save()
+    await article.save()
 
-    res.send(article)
-})
-
-//Read a comment -> ISSUES with Populate
-router.get('/:id/comment', async(req, res) => {
-    const article = await Article.findById(req.params.id).populate('commentss').exec();
-    res.send(article)
+    res.render('articles/show', { article: article })
 })
 
 //Edit Comment Route
-router.put('/comments/:commentId', async(req, res) => {
-    const comment = await Comment.findOneAndUpdate({
-        _id: req.params.commentId
-    },
-    req.body, 
-    {new: true, runValidators: true})
+router.put('/:slug/:commentId', async(req, res, next) => {
+    let comment
+    try {
+        comment = await Comment.findById(req.params.commentId)
+        comment.content = req.body.content
+        await comment.save()
+        next()
+    } catch {
+        //
+    }
 
-    res.send(comment)
-})
+}, renderArticle())
 
-router.delete('/comments/:commentId', async(req, res) => {
-    await Comment.findByIdAndRemove(req.params.id)
-    res.send({message: "Comment deleted"})
-})
+//Delete Comment Route + Delete Comment from Comments Array of Article
+router.delete('/:slug/:commentId', async(req, res, next) => {
+    const article = await Article.findOne({
+        slug: req.params.slug
+    })
+
+    const comment = req.params.commentId
+    var idx = article.comments.indexOf(`${comment}`)
+    if(idx != -1) article.comments.splice(idx, 1)
+    await article.save()
+
+    await Comment.findByIdAndDelete(req.params.commentId)
+    next()
+}, renderArticle())
+
+//REPLIES
+//Create Reply Route
+router.post('/:slug/:commentId', async(req, res, next) => {
+    const article = await Article.findOne({
+        slug: req.params.slug
+    })
+
+    let comment
+    
+    try {
+        comment = await Comment.findById(req.params.commentId)
+        const reply = new Comment({
+            content: req.body.content,
+            //createdAt: new Date(req.body.createdAt),
+            article: article._id,
+            isReply: true
+        });
+        await reply.save()
+
+        //Associate Comment with Reply
+        comment.replies.push(reply)
+        await comment.save()
+
+        await article.save()
+        
+        next()
+    } catch {
+        //
+    }
+
+}, renderArticle())
 
 //FUNCTIONS
 //Request/Response function
@@ -110,6 +167,29 @@ function saveArticleAndRedirect(path) {
         } catch (e) {
             res.render(`/articles/${path}`, { article: article })
         }
+    }
+}
+
+//Next of Comment changes
+function renderArticle(){
+    return async(req, res) => {
+        const article = await Article.findOne({
+            slug: req.params.slug
+        }).
+        populate({
+            path : 'comments',
+            populate: {
+                path: 'author',
+                select: 'pseudo -_id', //exclude id
+            }
+          }).
+          populate({
+            path : 'comments',
+            populate : {
+                path : 'replies'
+            }
+          }).exec()
+        res.redirect(`/articles/${article.slug}`)
     }
 }
 

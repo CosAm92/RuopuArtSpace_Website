@@ -12,7 +12,7 @@
         Edit
     </a>
 
-    <!--Article-->
+    <!--MAIN ARTICLE-->
     <div class="lead text-justify">
         <%- article.sanitizedHTML %>
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Enim exercitationem numquam aperiam impedit
@@ -20,35 +20,129 @@
             alias?
     </div>
 
-    <!--Comment section-->
+    <!--COMMENT SECTION-->
     <div class="card my-4">
         <h4 class="card-header">Leave a Comment:</h4>
         <div class="card-body">
-            <form method="POST" action="/comments">
-                <div class="form-group">
-                    <textarea class="form-control" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+            <form method="POST" action="/articles/<%= article.slug %>">
+                <%- include('newComment') %>
             </form>
         </div>
     </div>
 
-    <!--Single Comment-->
-    <div class="media mb-4">
-        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="pp">
-        <div class="media-body">
-            <h4 class="mt-0">User Name</h4>
-            <%= article.comments.forEach(comment => {
-                comment.content
-            }); %>
+    <!--SINGLE Comment-->
+    <% for (var i=article.comments.length-1; i>= 0 ; i--) { %>
+        <div class="media mb-4">
+            <img class="d-flex mr-3 rounded-circle" src="/images/default-user.jpg" style="height: 3rem; width: 3rem;"
+                alt="pp">
+            <div class="media-body" style="word-break: break-all;">
+                <div>
+                    <h4 class="mt-0">
+                        <% if(article.comments[i].author !=null){ %>
+                            <!--NEVER FORGET THIS LINE OMG, gets rid of "property of undefined" error-->
+                            <%= article.comments[i].author.pseudo %>
+                                <%}%>
+                    </h4>
+                    <div class="pull-left reply"> <a id='reply<%- i %>'><span><i class="fa fa-reply"></i>
+                                reply</span></a>
+                    </div>
+                </div>
 
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident a voluptatibus, maiores
-                        delectus voluptates officiis necessitatibus tempore perferendis distinctio dolore esse iusto
-                        aliquid ratione consequuntur officia in sequi repellendus quos.
+                <br>
+                <%= article.comments[i].content %>
+
+                    <div>
+                        <!--AUTHORISATION TODO-->
+                        <br>
+                        <%- include('../partials/deleteForm', {url:
+                            `/articles/${article.slug}/${article.comments[i]._id}`}) %>
+
+                            <button class="btn btn-primary" id="showEdit<%- i%>">Edit</button>
+                            <div id="editComment<%- i%>" style="display: none;">
+                                <br>
+                                <%- include('editComment', {url: `/articles/${article.slug}/${article.comments[i]._id}`,
+                                    placeholder: `${article.comments[i].content}`}) %>
+                                    <button class="btn btn-danger" id="hideEdit<%- i%>">Cancel</button>
+                            </div>
+
+                            <!--Nested Comments-->
+                            <div id="replyCom<%- i%>" style="display: none;">
+                                <form method="POST"
+                                    action="/articles/<%= article.slug %>/<%= article.comments[i]._id %>">
+                                    <br>
+                                    <%- include('newComment') %>
+                                        <button class="btn btn-danger" id="hideReply<%- i%>">Cancel</button>
+                                </form>
+                            </div>
+                    </div>
+
+                    <!--REPLY-->
+                    <% if(article.comments[i].replies){ %>
+                        <% article.comments[i].replies.forEach(reply=> { %>
+                            <br>
+                            <div class="media mb-4">
+                                <img class="d-flex mr-3 rounded-circle" src="/images/default-user.jpg"
+                                    style="height: 3rem; width: 3rem;" alt="pp">
+                                <div class="media-body">
+                                    <h4 class="mt-0">User Name</h4>
+                                    <div class="col-4">
+                                    </div>
+                                    <%= reply.content %>
+
+                                        <!--Admin Only-->
+                                        <div>
+                                            <br>
+                                            <%- include('../partials/deleteForm', {url:
+                                                `/articles/${article.slug}/${reply._id}`}) %>
+
+                                                <button class="btn btn-primary"
+                                                    id="showEdit<%= reply._id%>">Edit</button>
+                                                <div id="editComment<%= reply._id %>" style="display: none;">
+                                                    <br>
+                                                    <%- include('editComment', {url:
+                                                        `/articles/${article.slug}/${reply._id}`, placeholder:
+                                                        `${reply.content}`}) %>
+                                                        <button class="btn btn-danger"
+                                                            id="hideEdit<%= reply._id%>">Cancel</button>
+                                                </div>
+
+                                        </div>
+                                </div>
+                                <script>
+                                    document.getElementById("showEdit<%= reply._id%>").addEventListener("click", function () {
+                                        document.getElementById('editComment<%= reply._id%>').style.display = "block";
+                                    });
+                                    document.getElementById("hideEdit<%= reply._id%>").addEventListener("click", function () {
+                                        document.getElementById('editComment<%= reply._id%>').style.display = "none";
+                                    });
+                                </script>
+                            </div>
+                            <% }); %>
+                                <!--END of Reply-->
+
+                                <% } %>
+
+            </div>
+            <script>
+                document.getElementById("showEdit<%- i%>").addEventListener("click", function () {
+                    document.getElementById('editComment<%- i%>').style.display = "block";
+                });
+                document.getElementById("hideEdit<%- i%>").addEventListener("click", function () {
+                    document.getElementById('editComment<%- i%>').style.display = "none";
+                });
+            </script>
+
+            <script>
+                document.getElementById(`reply<%- i%>`).addEventListener("click", function () {
+                    document.getElementById('replyCom<%- i%>').style.display = "block";
+                });
+                document.getElementById("hideReply<%- i%>").addEventListener("click", function () {
+                    document.getElementById('replyCom<%- i%>').style.display = "none";
+                });
+            </script>
         </div>
-    </div>
-
-
-
-    <!--Nested Comments-->
+        <% } %>
+            <!--End of Commment section-->
 </div>
+
+<!--Put a PAGINATION between Articles with miniatures-->

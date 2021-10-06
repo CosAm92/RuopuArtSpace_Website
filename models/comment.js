@@ -2,10 +2,10 @@ const mongoose = require('mongoose')
 const Article = require('./article')
 
 const commentSchema = new mongoose.Schema({
-    /*username: {
-        type: mongoose.Schema.Types.ObjectId,
+    author: {
+        type: mongoose.Schema.Types.ObjectId, //Get name and email from here
         ref: 'User' //TO CREATE
-    },*/
+    },
     content: {
         type: String
     },
@@ -22,6 +22,14 @@ const commentSchema = new mongoose.Schema({
     article: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Article'
+    }, 
+    replies: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Comment'
+    }],
+    isReply: {
+        type: Boolean,
+        default: false
     }
 })
 

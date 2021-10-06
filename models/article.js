@@ -54,4 +54,17 @@ articleSchema.pre('validate', function (next) {
     next()
 })
 
+//Constraints so that a Comment of an Article can't exist if Article is erased
+/*articleSchema.pre('remove', function(next){
+    Comment.find({ article: this.id}, (err, comments) =>{
+        if(err){
+            next(err)
+        } else if (comments.length > 0){
+            //Remove Each Comment
+        } else {
+            next()
+        }
+    })
+})*/
+
 module.exports = mongoose.model('Article', articleSchema)
