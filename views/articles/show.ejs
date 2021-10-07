@@ -20,6 +20,25 @@
             alias?
     </div>
 
+    <!--SHARE and LIKES-->
+    <br>
+    <div class="d-flex justify-content-between">
+        <div>
+            <%- include("_like.ejs", {url:`/articles/${article.slug}/like`, replies: `${article.likes.length}`}) %>
+        </div>
+
+        <div>#InsertTagsHere</div>
+
+        <div>
+            <a class="btn btn-dark" href="#!" role="button">
+                <i class="fa fa-weixin"></i></a>
+            <a class="btn btn-dark" href="#!" role="button">
+                <i class="fa fa-twitter"></i></a>
+            <a class="btn btn-dark" href="#!" role="button">
+                <i class="fa fa-linkedin"></i></a>
+        </div>
+    </div>
+
     <!--COMMENT SECTION-->
     <div class="card my-4">
         <h4 class="card-header">Leave a Comment:</h4>
@@ -43,13 +62,20 @@
                             <%= article.comments[i].author.pseudo %>
                                 <%}%>
                     </h4>
-                    <div class="pull-left reply"> <a id='reply<%- i %>'><span><i class="fa fa-reply"></i>
-                                reply</span></a>
-                    </div>
                 </div>
-
-                <br>
                 <%= article.comments[i].content %>
+                    <br>
+
+                    <div class="pull-right reply"> <a id='reply<%- i %>'><span><i class="fa fa-reply"></i>
+                                reply</span></a>
+                                <i class="fa fa-comment" aria-hidden="true"></i>
+                            <%= article.comments[i].replies.length%>
+
+                        <%- include("_like.ejs", {url:`/articles/${article.slug}/${article.comments[i]._id}/like`, replies: `${article.comments[i].likes.length}`}) %>
+                            
+
+
+                    </div>
 
                     <div>
                         <!--AUTHORISATION TODO-->
@@ -57,7 +83,9 @@
                         <%- include('../partials/deleteForm', {url:
                             `/articles/${article.slug}/${article.comments[i]._id}`}) %>
 
-                            <button class="btn btn-primary" id="showEdit<%- i%>">Edit</button>
+                            <button class="btn btn-primary" id="showEdit<%- i%>"><i class="fa fa-pencil"
+                                    aria-hidden="true"></i>
+                            </button>
                             <div id="editComment<%- i%>" style="display: none;">
                                 <br>
                                 <%- include('editComment', {url: `/articles/${article.slug}/${article.comments[i]._id}`,
@@ -95,8 +123,9 @@
                                             <%- include('../partials/deleteForm', {url:
                                                 `/articles/${article.slug}/${reply._id}`}) %>
 
-                                                <button class="btn btn-primary"
-                                                    id="showEdit<%= reply._id%>">Edit</button>
+                                                <button class="btn btn-primary" id="showEdit<%= reply._id%>"><i
+                                                        class="fa fa-pencil" aria-hidden="true"></i>
+                                                </button>
                                                 <div id="editComment<%= reply._id %>" style="display: none;">
                                                     <br>
                                                     <%- include('editComment', {url:

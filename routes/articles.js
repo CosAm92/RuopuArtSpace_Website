@@ -47,6 +47,35 @@ router.get('/:slug', async (req, res) => {
     res.render('articles/show', { article: article })
 })
 
+//Like an article
+router.put('/:slug/like', async (req, res) => {
+    try {
+        const article = await Article.findOne({slug: req.params.slug})
+        await article.updateOne({$push:{likes: req.body.test}})
+        /*if(!article.likes.includes(req.body.userId)){
+            await article.updateOne({$push:{likes: req.body.userId}})
+        } else {
+            await article.updateOne({$pull: {likes: req.body.userId}})
+        }*/ //ADD WHEN USER LOGIN/REGISTER IS DONE
+        res.redirect(`/articles/${article.slug}`)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
+router.put('/:slug/:commentId/like', async (req, res) => {
+    try {
+        const article = await Article.findOne({slug: req.params.slug})
+        let comment
+        comment = await Comment.findById(req.params.commentId)
+        await comment.updateOne({$push:{likes: req.body.test}})
+        //
+        res.redirect(`/articles/${article.slug}`)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+})
+
 //Create new Article
 router.post('/', async (req, res, next) => { //Get POST from new.ejs form and save to db
     req.article = new Article()

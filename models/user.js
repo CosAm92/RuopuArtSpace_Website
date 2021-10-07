@@ -2,10 +2,15 @@ const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
     pseudo: {
-        type: String
+        type: String,
+        require: true,
+        min: 3,
+        max: 20,
+        unique: true
     },
     email: {
-        type: String
+        type: String,
+        unique: true
     },
     role: {
         type: String
@@ -15,6 +20,10 @@ const userSchema = new mongoose.Schema({
     },
     token: {
         type: String
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
     }
 })
 

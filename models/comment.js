@@ -19,6 +19,10 @@ const commentSchema = new mongoose.Schema({
         required: true,
         default: Date.now
     },
+    likes: {
+        type: Array,
+        default: []
+    },
     article: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Article'
