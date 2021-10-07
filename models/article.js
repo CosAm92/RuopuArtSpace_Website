@@ -7,6 +7,8 @@ const dompurify = createDomPurify(new JSDOM().window) //dompurify creates HTML w
 const Comment = require('./comment')
 const User = require('./user')
 
+const articleImageBasePath = 'uploads/articleImage'
+
 const articleSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -45,6 +47,18 @@ const articleSchema = new mongoose.Schema({
     sanitizedHTML:{
         type: String,
         required: true
+    },
+    image: {
+        type: Buffer, //Buffer of the data representing the image
+        required: true
+    },
+    imageType: {
+        type: String,
+        required: true
+    },
+    theme: {
+        type: String //TODO: change to array of Tags with Tag a predetermined object that can be modified (like author)
+        //1 theme = 1 color
     }
 })
 
@@ -76,4 +90,14 @@ articleSchema.pre('validate', function (next) {
     })
 })*/
 
+//Same as Artwork -> To Optimize
+articleSchema.virtual('articleImagePath').get(function() {
+    if(this.image != null && this.imageType != null){
+/*return path.join('/', artworkImageBasePath, this.image)*/
+return `data:${this.imageType};charset=utf-8;base64,${
+    this.image.toString('base64')}`
+    }
+})
+
 module.exports = mongoose.model('Article', articleSchema)
+module.exports.articleImageBasePath = articleImageBasePath

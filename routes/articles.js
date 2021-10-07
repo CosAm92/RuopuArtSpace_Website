@@ -4,6 +4,8 @@ const User = require('../models/user')
 const Comment = require('../models/comment')
 const router = express.Router() //Gives us a router to create views
 
+const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
+
 //ARTICLES
 //Show all articles
 router.get('/', async (req,res) =>{
@@ -29,6 +31,10 @@ router.get('/:slug', async (req, res) => {
     const article = await Article.findOne({
         slug: req.params.slug
     }).
+    populate({
+        path : 'author',
+            select: 'pseudo -_id', //exclude id
+     }).
     populate({
         path : 'comments',
         populate: {
@@ -189,6 +195,8 @@ function saveArticleAndRedirect(path) {
         article.summary = req.body.summary
         article.markdown = req.body.markdown
 
+        saveImage(article, req.body.image)
+
         //Save an article/Else redirect
         try {
             await article.save()
@@ -219,6 +227,17 @@ function renderArticle(){
             }
           }).exec()
         res.redirect(`/articles/${article.slug}`)
+    }
+}
+
+//Same as Artwork's to Optimize
+function saveImage(artwork, imageEncode) {
+    //Is it valid?
+    if (imageEncode == null) return
+    const image = JSON.parse(imageEncode)
+    if (image != null && imageMimeTypes.includes(image.type)) {
+        artwork.image = new Buffer.from(image.data, 'base64')
+        artwork.imageType = image.type
     }
 }
 
