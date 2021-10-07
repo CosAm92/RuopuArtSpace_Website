@@ -89,10 +89,35 @@ router.post('/', async (req, res, next) => { //Get POST from new.ejs form and sa
 }, saveArticleAndRedirect('new'))
 
 //Edit an Article
-router.put('/:id', async (req, res, next) => {
+/*router.put('/:id', async (req, res, next) => {
     req.article = await Article.findById(req.params.id)
     next() //Go to the next function
-}, saveArticleAndRedirect('new'))
+}, saveArticleAndRedirect('new'))*/
+
+router.put('/:id', async (req, res) => {
+    //Save artwork
+    let article
+    try {
+        article = await Article.findById(req.params.id)
+        article.title = req.body.title
+        //article.author = '613f7f62cb162826bc77ae14'//req.body.author PLACEHOLDER TO CHANGE WHEN USER LOG ADDED
+        //article.createdAt = new Date(req.body.createdAt)
+        article.summary = req.body.summary
+        article.markdown = req.body.markdown
+
+        if (req.body.image != null && req.body.image !== '') {
+            saveImage(article, req.body.image)
+        } //The default is null, we don't want to delete the cover
+        await article.save()
+        res.redirect(`/articles/${article.slug}`)
+    } catch {
+        if (article != null) {
+            renderEditPage(res, article, true) //Useless?
+        } else {
+            res.redirect('/')
+        }
+    }
+})
 
 //Delete an Article
 router.delete('/:id', async (req, res) => {
@@ -195,7 +220,7 @@ function saveArticleAndRedirect(path) {
         article.summary = req.body.summary
         article.markdown = req.body.markdown
 
-        saveImage(article, req.body.image)
+        saveImage(article, req.body.image) //OK ISSUE HERE
 
         //Save an article/Else redirect
         try {
@@ -231,14 +256,38 @@ function renderArticle(){
 }
 
 //Same as Artwork's to Optimize
-function saveImage(artwork, imageEncode) {
+function saveImage(article, imageEncode) {
     //Is it valid?
     if (imageEncode == null) return
     const image = JSON.parse(imageEncode)
     if (image != null && imageMimeTypes.includes(image.type)) {
-        artwork.image = new Buffer.from(image.data, 'base64')
-        artwork.imageType = image.type
+        article.image = new Buffer.from(image.data, 'base64')
+        article.imageType = image.type
     }
+}
+
+///Maybe useless (cf Edit route)
+async function renderEditPage(res, article, hasError = false) {
+    renderFormPage(res, article, 'edit', hasError)
+}
+async function renderFormPage(res, article, form, hasError = false) { //res to render/redirect, artwork = new or existing one
+    try {
+        const params = {
+            article: article
+        }
+        /*const authors = await Author.find({})
+        if (hasError) {
+            if (form === 'edit') {
+                params.errorMessage = 'Error Editing Artwork'
+            } else {
+                params.errorMessage = 'Error Creating Artwork'
+            }
+        }*/
+        res.render(`articles/${form}`, params)
+    } catch {
+        res.redirect('/articles')
+    }
+    //res.render("artwork/new", { artwork: new Artwork() })
 }
 
 module.exports = router //We can read this router everywhere
