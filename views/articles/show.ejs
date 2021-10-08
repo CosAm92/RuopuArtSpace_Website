@@ -1,14 +1,19 @@
 <!-- Bootstrap Static Header (with Opacity change for article image)-->
-<div style="background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)),url('<%- article.articleImagePath%>'); ">
+<div
+    style="background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)),url('<%- article.articleImagePath%>'); ">
     <div class="container py-5 text-center">
-        <h1 class="display-4 font-weight-bold"><%= article.title %></h1>
-        <p class="font-italic mb-0"><%= article.summary%></p>
+        <h1 class="display-4 font-weight-bold">
+            <%= article.title %>
+        </h1>
+        <p class="font-italic mb-0">
+            <%= article.summary%>
+        </p>
         <p class="font-italic">Written by
             <% if(article.author !=null){ %>
-            <%= article.author.pseudo %>
-            <% } %> 
+                <%= article.author.pseudo %>
+                    <% } %>
         </p>
-        <a href="/articles" role="button" class="btn btn-primary px-5">Back to All articles</a>
+        <a href="/articles?page=1&limit=3" role="button" class="btn btn-primary px-5">Back to All articles</a>
         <a href="/articles/edit/<%= article.id %>" class="btn btn-secondary">
             Edit
         </a>
@@ -19,7 +24,7 @@
     <div class="text-muted mb-2">
         <%= article.createdAt.toLocaleDateString() %>
     </div>
-    
+
 
     <!--MAIN ARTICLE-->
     <div class="lead text-justify">
@@ -27,14 +32,15 @@
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Enim exercitationem numquam aperiam impedit
             tenetur illum sapiente nobis saepe a ipsum, asperiores minima, harum distinctio fugiat eius, sit ex quia
             alias?
-            <div style="object-fit: cover;"> <!--object-fit zooms in instead of stretching-->               
+            <div style="object-fit: cover;">
+                <!--object-fit zooms in instead of stretching-->
                 <img class="img-fluid" style="width: 30rem;" src="<%= article.articleImagePath%>" alt="artwork" />
                 <img class="img-fluid" style="width: 10rem;" src="/images/RAS.png">
             </div>
     </div>
 
     <!--SHARE and LIKES-->
-    <br>
+    <br><br>
     <div class="d-flex justify-content-between">
         <div>
             <%- include("_like.ejs", {url:`/articles/${article.slug}/like`, replies: `${article.likes.length}`}) %>
@@ -53,6 +59,10 @@
     </div>
 
     <!--COMMENT SECTION-->
+    <hr />
+    <h4>
+        <%= article.comments.length%> Comments
+    </h4>
     <div class="card my-4">
         <h4 class="card-header">Leave a Comment:</h4>
         <div class="card-body">
@@ -81,11 +91,12 @@
 
                     <div class="pull-right reply"> <a id='reply<%- i %>'><span><i class="fa fa-reply"></i>
                                 reply</span></a>
-                                <i class="fa fa-comment" aria-hidden="true"></i>
-                            <%= article.comments[i].replies.length%>
+                        <i class="fa fa-comment" aria-hidden="true"></i>
+                        <%= article.comments[i].replies.length%>
 
-                        <%- include("_like.ejs", {url:`/articles/${article.slug}/${article.comments[i]._id}/like`, replies: `${article.comments[i].likes.length}`}) %>
-                            
+                            <%- include("_like.ejs", {url:`/articles/${article.slug}/${article.comments[i]._id}/like`,
+                                replies: `${article.comments[i].likes.length}`}) %>
+
 
 
                     </div>
@@ -185,6 +196,36 @@
         </div>
         <% } %>
             <!--End of Commment section-->
-</div>
 
-<!--Put a PAGINATION between Articles with miniatures-->
+            <!--Put a PAGINATION between Articles with miniatures-->
+            <hr>
+            <div class="d-flex justify-content-between">
+                <% if(previous) {%>
+                    <div style="object-fit: cover;">
+                        <h4><a href="/articles/<%= previous['slug']%>"><i class="fa fa-angle-left"></i> Previous
+                                <br><br>
+                                <img class="rounded-circle" style="width: 10rem; height: 10rem; "
+                                    src="<%= previous['articleImagePath']%>">
+                                <h6>
+                                    <%= previous['title']%>
+                                </h6>
+                            </a></h4>
+                    </div>
+                    <% } %>
+                        <div style="object-fit: cover;">
+                            <% if(next) {%>
+                                <h4 style="text-align: right;"><a href="/articles/<%= next['slug']%>">Next <i
+                                            class="fa fa-angle-right"></i>
+                                        <br><br>
+                                        <img class="rounded-circle" style="width: 10rem; height: 10rem;"
+                                            src="<%= next['articleImagePath']%>">
+                                        <h6>
+                                            <%= next['title']%>
+                                        </h6>
+
+                                    </a></h4>
+
+                                <% } %>
+                        </div>
+            </div>
+</div>

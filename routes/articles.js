@@ -8,17 +8,23 @@ const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
 
 //ARTICLES
 //Show all articles
-router.get('/', async (req,res) =>{
+/*router.get('/', async (req, res) => {
     const articles = await Article.find().sort({
         createdAt: 'desc' //Top article = newest one
     })
-    res.render('articles/index', {articles: articles})
+
+    res.render('articles/index', { articles: articles })
+})*/
+
+///articles?page=1&limit=4
+router.get('/', paginationResults(Article), (req, res) => {
+    res.render('articles/index', { articles: res.paginationResults.results, next: res.paginationResults.next, previous: res.paginationResults.previous})
 })
 
 //Go to Create Form
 router.get('/new', (req, res) => {
     res.render("articles/new", { article: new Article() })
-}) 
+})
 
 //Go to Edit Form
 router.get('/edit/:id', async (req, res) => {
@@ -31,33 +37,39 @@ router.get('/:slug', async (req, res) => {
     const article = await Article.findOne({
         slug: req.params.slug
     }).
-    populate({
-        path : 'author',
-            select: 'pseudo -_id', //exclude id
-     }).
-    populate({
-        path : 'comments',
-        populate: {
+        populate({
             path: 'author',
             select: 'pseudo -_id', //exclude id
-        }
-      }).
-      populate({
-        path : 'comments',
-        populate : {
-            path : 'replies'
-        }
-      }).exec() //We await/wait for the article before executing function
+        }).
+        populate({
+            path: 'comments',
+            populate: {
+                path: 'author',
+                select: 'pseudo -_id', //exclude id
+            }
+        }).
+        populate({
+            path: 'comments',
+            populate: {
+                path: 'replies'
+            }
+        }).exec() //We await/wait for the article before executing function
+
+    //const next = await Article.findOne({createdAt: {$lt: article.createdAt}}).limit(1)
+    //const previous = await Article.findOne({createdAt: {$gt: article.createdAt}}).limit(1)
+
+    const previous = await Article.findOne({_id: {$lt: article._id}}).sort({_id: -1}).limit(1)
+    const next = await Article.findOne({_id: {$gt: article._id}}).sort({_id: 1}).limit(1)
 
     if (article == null) res.redirect('/articles') //If no articles are found, redirect to Articles
-    res.render('articles/show', { article: article })
+    res.render('articles/show', { article: article, previous: previous, next: next })
 })
 
 //Like an article
 router.put('/:slug/like', async (req, res) => {
     try {
-        const article = await Article.findOne({slug: req.params.slug})
-        await article.updateOne({$push:{likes: req.body.test}})
+        const article = await Article.findOne({ slug: req.params.slug })
+        await article.updateOne({ $push: { likes: req.body.test } })
         /*if(!article.likes.includes(req.body.userId)){
             await article.updateOne({$push:{likes: req.body.userId}})
         } else {
@@ -71,10 +83,10 @@ router.put('/:slug/like', async (req, res) => {
 
 router.put('/:slug/:commentId/like', async (req, res) => {
     try {
-        const article = await Article.findOne({slug: req.params.slug})
+        const article = await Article.findOne({ slug: req.params.slug })
         let comment
         comment = await Comment.findById(req.params.commentId)
-        await comment.updateOne({$push:{likes: req.body.test}})
+        await comment.updateOne({ $push: { likes: req.body.test } })
         //
         res.redirect(`/articles/${article.slug}`)
     } catch (err) {
@@ -128,11 +140,11 @@ router.delete('/:id', async (req, res) => {
 
 //COMMENTS
 //Create a comment route
-router.post('/:slug', async(req, res) => {
+router.post('/:slug', async (req, res, next) => {
     const article = await Article.findOne({
         slug: req.params.slug
     }).
-    populate('comments').exec()
+        populate('comments').exec()
 
     const comment = new Comment({
         author: '613f7f62cb162826bc77ae14', //PLACEHOLDER -> CHANGE WHEN LOGIN/REGISTER CREATED
@@ -146,11 +158,12 @@ router.post('/:slug', async(req, res) => {
     article.comments.push(comment)
     await article.save()
 
-    res.render('articles/show', { article: article })
-})
+    next()
+    //res.render('articles/show', { article: article })
+}, renderArticle())
 
 //Edit Comment Route
-router.put('/:slug/:commentId', async(req, res, next) => {
+router.put('/:slug/:commentId', async (req, res, next) => {
     let comment
     try {
         comment = await Comment.findById(req.params.commentId)
@@ -164,14 +177,14 @@ router.put('/:slug/:commentId', async(req, res, next) => {
 }, renderArticle())
 
 //Delete Comment Route + Delete Comment from Comments Array of Article
-router.delete('/:slug/:commentId', async(req, res, next) => {
+router.delete('/:slug/:commentId', async (req, res, next) => {
     const article = await Article.findOne({
         slug: req.params.slug
     })
 
     const comment = req.params.commentId
     var idx = article.comments.indexOf(`${comment}`)
-    if(idx != -1) article.comments.splice(idx, 1)
+    if (idx != -1) article.comments.splice(idx, 1)
     await article.save()
 
     await Comment.findByIdAndDelete(req.params.commentId)
@@ -180,13 +193,13 @@ router.delete('/:slug/:commentId', async(req, res, next) => {
 
 //REPLIES
 //Create Reply Route
-router.post('/:slug/:commentId', async(req, res, next) => {
+router.post('/:slug/:commentId', async (req, res, next) => {
     const article = await Article.findOne({
         slug: req.params.slug
     })
 
     let comment
-    
+
     try {
         comment = await Comment.findById(req.params.commentId)
         const reply = new Comment({
@@ -202,7 +215,7 @@ router.post('/:slug/:commentId', async(req, res, next) => {
         await comment.save()
 
         await article.save()
-        
+
         next()
     } catch {
         //
@@ -233,24 +246,24 @@ function saveArticleAndRedirect(path) {
 }
 
 //Next of Comment changes
-function renderArticle(){
-    return async(req, res) => {
+function renderArticle() {
+    return async (req, res) => {
         const article = await Article.findOne({
             slug: req.params.slug
         }).
-        populate({
-            path : 'comments',
-            populate: {
-                path: 'author',
-                select: 'pseudo -_id', //exclude id
-            }
-          }).
-          populate({
-            path : 'comments',
-            populate : {
-                path : 'replies'
-            }
-          }).exec()
+            populate({
+                path: 'comments',
+                populate: {
+                    path: 'author',
+                    select: 'pseudo -_id', //exclude id
+                }
+            }).
+            populate({
+                path: 'comments',
+                populate: {
+                    path: 'replies'
+                }
+            }).exec()
         res.redirect(`/articles/${article.slug}`)
     }
 }
@@ -289,5 +302,42 @@ async function renderFormPage(res, article, form, hasError = false) { //res to r
     }
     //res.render("artwork/new", { artwork: new Artwork() })
 }
+
+///PAGINATION
+function paginationResults(model) {
+    return async (req, res, next) => {
+
+        const page = parseInt(req.query.page)
+        const limit = parseInt(req.query.limit)
+        const startIndex = (page - 1) * limit
+        const endIndex = page * limit
+
+        const results = {}
+        if (endIndex < await model.countDocuments().exec()) {
+            results.next = {
+                page: page + 1,
+                limit: limit
+            }
+        }
+
+        if (startIndex > 0) { //Check if we're at page 1
+            results.previous = {
+                page: page - 1,
+                limit: limit
+            }
+        }
+
+        try {
+            results.results = await model.find().sort({
+                createdAt: 'desc' //Top article = newest one
+            }).limit(limit).skip(startIndex).exec()
+            res.paginationResults = results
+            next()
+        } catch (e) {
+            res.status(500).json({message: e.message})
+        }        
+    }
+}
+
 
 module.exports = router //We can read this router everywhere
