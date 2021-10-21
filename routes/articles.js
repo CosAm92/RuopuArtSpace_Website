@@ -134,7 +134,8 @@ router.put('/:id', async (req, res) => {
 //Delete an Article
 router.delete('/:id', async (req, res) => {
     await Article.findByIdAndDelete(req.params.id)
-    res.redirect('/articles')
+    res.redirect(`/articles?page=1&limit=3`) //Maybe too hard coded but it's the only way to change the url
+    //res.render('articles/index' , { articles: res.paginationResults.results, next: res.paginationResults.next, previous: res.paginationResults.previous})
 })
 
 
