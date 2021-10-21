@@ -9,6 +9,7 @@ const methodOverride = require('method-override')
 const expressLayouts = require('express-ejs-layouts')
 
 const indexRouter = require('./routes/index')
+const customRouter = require('./routes/custom')
 const articleRouter = require('./routes/articles')
 const authorRouter = require('./routes/authors')
 const artworkRouter = require('./routes/artworks')
@@ -41,6 +42,7 @@ app.use(methodOverride('_method')) //If we path _method we can do more that GET/
 })*/
 
 app.use('/', indexRouter)
+app.use('/custom', customRouter)
 app.use('/articles', articleRouter) //Changes the route: we can look at articles in localhost:5001/articles/articleRouter
 app.use('/authors', authorRouter)
 app.use('/artworks', artworkRouter)
