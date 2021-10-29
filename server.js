@@ -13,6 +13,8 @@ const customRouter = require('./routes/custom')
 const articleRouter = require('./routes/articles')
 const authorRouter = require('./routes/authors')
 const artworkRouter = require('./routes/artworks')
+const userRouter = require('./routes/users')
+const authRouter = require('./routes/auth')
 
 const app = express()
 const port = process.env.PORT || 5001;
@@ -46,6 +48,8 @@ app.use('/custom', customRouter)
 app.use('/articles', articleRouter) //Changes the route: we can look at articles in localhost:5001/articles/articleRouter
 app.use('/authors', authorRouter)
 app.use('/artworks', artworkRouter)
+app.use('/users', userRouter)
+app.use('/auth', authRouter)
 
 app.listen(port, () => {
     console.log(`Now listening on port ${port}`);

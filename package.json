@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/CosAm92/RuopuArtSpace_Website#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "canvas": "^2.8.0",
     "canvas-constructor": "^5.0.1",
     "dom-to-image": "^2.6.0",
