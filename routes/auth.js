@@ -44,10 +44,19 @@ router.post('/login', async (req, res) => {
         const validPassword = await bcrypt.compare(req.body.password, user.password)
         !validPassword && res.status(404).json("Wrong password")
 
+        session=req.session
+        session.userId=user.email
+        session.userIsAdmin= user.isAdmin
+
         res.redirect('/')
     } catch(e) {
         console.log(e)
     }
 })
+
+router.get('/logout',(req,res) => {
+    req.session.destroy();
+    res.redirect('/');
+});
 
 module.exports = router

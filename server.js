@@ -8,6 +8,8 @@ const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const expressLayouts = require('express-ejs-layouts')
 
+const sessions = require('express-session');
+
 const indexRouter = require('./routes/index')
 const customRouter = require('./routes/custom')
 const articleRouter = require('./routes/articles')
@@ -42,6 +44,11 @@ app.use(methodOverride('_method')) //If we path _method we can do more that GET/
 /*app.get('/', (req, res) => {
     res.render('index')
 })*/
+app.use(sessions({
+    secret: process.env.ACCESS_TOKEN_SECRET,
+    saveUninitialized:true,
+    resave: false
+}));
 
 app.use('/', indexRouter)
 app.use('/custom', customRouter)
