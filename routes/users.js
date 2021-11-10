@@ -9,7 +9,8 @@ const passport = require('passport')
 //initializePassport(passport, email => users.find(user => user.email === email))
 
 router.get('/', authUser, async (req, res) => {
-    res.send('Hey')
+    const user = await User.findOne({email: session.userId})
+    res.send("Hey " + user.pseudo)
 })
 
 router.get('/session',(req,res) => {
