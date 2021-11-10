@@ -11,7 +11,7 @@ const expressLayouts = require('express-ejs-layouts')
 const sessions = require('express-session');
 
 const indexRouter = require('./routes/index')
-const customRouter = require('./routes/custom')
+//const customRouter = require('./routes/custom') //Erase custom router file, it's useless
 const articleRouter = require('./routes/articles')
 const authorRouter = require('./routes/authors')
 const artworkRouter = require('./routes/artworks')
@@ -50,13 +50,30 @@ app.use(sessions({
     resave: false
 }));
 
+//No-cache for logged out users
+app.use(function(req, res, next) {
+    if (!req.user)
+        res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    next();
+});
+
+// Middleware to make 'user' available to all .ejs templates
+//Uses the server data put into session variable during login
+app.use(function(req, res, next) {
+    res.locals.userId = req.session.userId;
+    res.locals.isAdmin = req.session.userIsAdmin;
+    next();
+});
+
 app.use('/', indexRouter)
-app.use('/custom', customRouter)
 app.use('/articles', articleRouter) //Changes the route: we can look at articles in localhost:5001/articles/articleRouter
 app.use('/authors', authorRouter)
 app.use('/artworks', artworkRouter)
 app.use('/users', userRouter)
 app.use('/auth', authRouter)
+app.get('/custom', (req, res) => {
+    res.render('custom');
+   });
 
 app.listen(port, () => {
     console.log(`Now listening on port ${port}`);

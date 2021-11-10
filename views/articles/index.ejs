@@ -2,7 +2,10 @@
     <h1 class="mb-4"> Recent events (Articles and Workshops)
 
     </h1> <!-- We pass js objects though %-->
+    <% if(isAdmin){ %> 
     <a href="/articles/new" class="btn btn-success">New Article</a>
+    <% } %> 
+
     <% articles.forEach(article=> { %>
         <div class="card mt-4">
             <div class="card-body">
@@ -16,7 +19,11 @@
                     <%= article.summary %>
                 </div>
                 <a href="articles/<%= article.slug %>" class="btn btn-primary">Read More</a>
+
+                <% if(isAdmin){ %> 
                 <a href="articles/edit/<%= article.id %>" class="btn btn-info">Edit</a>
+                <% } %> 
+                
                 <%- include('../partials/deleteForm', {url: `/articles/${article.id}`}) %>
             </div>
         </div>

@@ -33,115 +33,133 @@
     }
 </style>
 
-<div class="container">
-    <div class="d-flex justify-content-center flex-wrap">
+<style>
+    #item-isMug {
+        display: none;
+    }
+</style>
 
-        <!-- Create the container of the tool -->
-        <div id="tshirt-div">
-            <!-- 
+<div class="container">
+    <label for="item-design">Choose your item:</label>
+    <select onchange="displayItem(this)">
+        <option value="">Select one customizable item ...</option>
+        <option value="item-isTshirt">T-shirt</option>
+        <option value="item-isMug">Mug</option>
+    </select>
+</div>
+
+<div id="item-isTshirt">
+    <div class="container">
+        <div class="d-flex justify-content-center flex-wrap">
+
+            <!-- Create the container of the tool -->
+            <div id="tshirt-div">
+                <!-- 
                 Initially, the image will have the background tshirt that has transparency
                 So we can simply update the color with CSS or JavaScript dinamically
             -->
-            <img id="tshirt-backgroundpicture" src="/images/background_tshirt.png" />
+                <img id="tshirt-backgroundpicture" src="/images/background_tshirt.png" />
 
-            <div id="drawingArea" class="drawing-area">
-                <div class="canvas-container">
-                    <canvas id="tshirt-canvas" width="200" height="400"></canvas>
+                <div id="drawingArea" class="drawing-area">
+                    <div class="canvas-container">
+                        <canvas id="tshirt-canvas" width="200" height="400"></canvas>
+                    </div>
                 </div>
             </div>
+
+            <div class="container" style="width: 28rem;">
+                <!--28rem = à voir selon les écrans-->
+                <p>To remove a loaded picture on the T-Shirt select it and press the <kbd>DEL</kbd> key.</p>
+                <!-- The select that will allow the user to pick one of the static designs -->
+                <br>
+                <label for="tshirt-design">T-Shirt Design:</label>
+                <select id="tshirt-design">
+                    <option value="">Select one of our designs ...</option>
+                    <option value="/images/RAS.png">Ruopu Art Space</option>
+                </select>
+
+                <!-- The Select that allows the user to change the color of the T-Shirt -->
+                <br><br>
+                <label for="tshirt-color">T-Shirt Color:</label>
+                <select id="tshirt-color">
+                    <!-- You can add any color with a new option and definings its hex code -->
+                    <option value="#fff">White</option>
+                    <option value="#000">Black</option>
+                    <option value="#f00">Red</option>
+                    <option value="#008000">Green</option>
+                    <option value="#ff0">Yellow</option>
+                </select>
+
+                <!--add text-->
+                <br>
+                <button class="btn btn-outline-dark" id='tshirt-text'>Add text</button>
+
+                <br><br>
+                Upload your own design:
+                <label for="tshirt-custompicture"></label>
+                <input type="file" id="tshirt-custompicture" />
+
+                <br><br>
+                <button class="btn btn-dark" id='dl'>Download</button>
+                <br><br>
+            </div>
+
         </div>
+    </div>
 
-        <div class="container" style="width: 28rem;">
-            <!--28rem = à voir selon les écrans-->
-            <p>To remove a loaded picture on the T-Shirt select it and press the <kbd>DEL</kbd> key.</p>
-            <!-- The select that will allow the user to pick one of the static designs -->
-            <br>
-            <label for="tshirt-design">T-Shirt Design:</label>
-            <select id="tshirt-design">
-                <option value="">Select one of our designs ...</option>
-                <option value="/images/RAS.png">Ruopu Art Space</option>
-            </select>
-
-            <!-- The Select that allows the user to change the color of the T-Shirt -->
-            <br><br>
-            <label for="tshirt-color">T-Shirt Color:</label>
-            <select id="tshirt-color">
-                <!-- You can add any color with a new option and definings its hex code -->
-                <option value="#fff">White</option>
-                <option value="#000">Black</option>
-                <option value="#f00">Red</option>
-                <option value="#008000">Green</option>
-                <option value="#ff0">Yellow</option>
-            </select>
-
-            <!--add text-->
-            <br>
-            <button class="btn btn-outline-dark" id='tshirt-text'>Add text</button>
-
-            <br><br>
-            Upload your own design:
-            <label for="tshirt-custompicture"></label>
-            <input type="file" id="tshirt-custompicture" />
-
-            <br><br>
-            <button class="btn btn-dark" id='dl'>Download</button>
-            <br><br>
-        </div>
-
+    <div class="container">
+        <div id='new-design'></div>
     </div>
 </div>
-
-<div class="container">
-    <div id='new-design'></div>
-</div>
-
 
 <!--fnknf mug-->
 <!--With a mug now-->
-<div class="container">
-    <div class="d-flex justify-content-center flex-wrap">
-        <div id="mug-div" style="background-color: whitesmoke; justify-content: center; position: relative;">
+<div id="item-isMug">
+    <div class="container">
+        <div class="d-flex justify-content-center flex-wrap">
+            <div id="mug-div" style="background-color: whitesmoke; justify-content: center; position: relative;">
 
-            <img id="mug-backgroundpicture" src="/images/mug.png" width="452" height="280" />
+                <img id="mug-backgroundpicture" src="/images/mug.png" width="452" height="280" />
 
-            <div id="drawingAreaMug">
-                <div style="width: 100%; height: 100%; position: absolute; left: 0; top: 0; z-index: 10;">
-                    <canvas id="mug-canvas" width="452" height="280"></canvas>
+                <div id="drawingAreaMug">
+                    <div style="width: 100%; height: 100%; position: absolute; left: 0; top: 0; z-index: 10;">
+                        <canvas id="mug-canvas" width="452" height="280"></canvas>
+                    </div>
                 </div>
             </div>
+
+
+            <div class="container" style="width: 28rem;">
+                <!--28rem = à voir selon les écrans-->
+                <p>To remove a loaded picture on the Mug select it and press the <kbd>DEL</kbd> key.</p>
+                <!-- The select that will allow the user to pick one of the static designs -->
+                <br>
+                <label for="mug-design">Mug Design:</label>
+                <select id="mug-design">
+                    <option value="">Select one of our designs ...</option>
+                    <option value="/images/RAS.png">Ruopu Art Space</option>
+                </select>
+
+                <!--add text-->
+                <br>
+                <button class="btn btn-outline-dark" id='mug-text'>Add text</button>
+
+                <br><br>
+                Upload your own design:
+                <label for="mug-custompicture"></label>
+                <input type="file" id="mug-custompicture" />
+
+                <br><br>
+                <button class="btn btn-dark" id='dl-mug'>Download</button>
+                <br><br>
+            </div>
+
         </div>
-
-
-        <div class="container" style="width: 28rem;">
-            <!--28rem = à voir selon les écrans-->
-            <p>To remove a loaded picture on the Mug select it and press the <kbd>DEL</kbd> key.</p>
-            <!-- The select that will allow the user to pick one of the static designs -->
-            <br>
-            <label for="mug-design">Mug Design:</label>
-            <select id="mug-design">
-                <option value="">Select one of our designs ...</option>
-                <option value="/images/RAS.png">Ruopu Art Space</option>
-            </select>
-
-            <!--add text-->
-            <br>
-            <button class="btn btn-outline-dark" id='mug-text'>Add text</button>
-
-            <br><br>
-            Upload your own design:
-            <label for="mug-custompicture"></label>
-            <input type="file" id="mug-custompicture" />
-
-            <br><br>
-            <button class="btn btn-dark" id='dl-mug'>Download</button>
-            <br><br>
-        </div>
-
     </div>
-</div>
 
-<div class="container">
-    <div id='new-mugdesign'></div>
+    <div class="container">
+        <div id='new-mugdesign'></div>
+    </div>
 </div>
 
 <!-- Include Fabric.js in the page -->
@@ -160,6 +178,12 @@
             canvas.renderAll();
         });
     }
+
+    function displayItem(elementValue) {
+        document.getElementById('item-isTshirt').style.display = elementValue.value == 'item-isTshirt' ? 'block' : 'none';
+        document.getElementById('item-isMug').style.display = elementValue.value == 'item-isMug' ? 'block' : 'none';
+    }
+    //item-isMug value = 1 s'affiche
 
     // Update the TShirt color according to the selected color by the user
     document.getElementById("tshirt-color").addEventListener("change", function () {

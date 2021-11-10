@@ -15,7 +15,7 @@ router.get('/', authUser, async (req, res) => {
 
 router.get('/session',(req,res) => {
     if(session.userId){
-        res.send("Welcome User <a href=\'/logout'>click to logout</a>");
+        res.send("Welcome User <a href=\'/auth/logout'>click to logout</a>");
     }else
     res.redirect('/')
 });

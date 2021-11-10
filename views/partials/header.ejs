@@ -7,43 +7,86 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav mr-auto">
+                <!--mr-auto to align last ul to the right is me-auto in Bootstrap 5-->
                 <li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/authors">Authors</a></li>
-                <li class="nav-item"><a class="nav-link" href="/authors/new">Add Authors</a></li>
                 <li class="nav-item"><a class="nav-link" href="/articles?page=1&limit=3">Events</a></li>
-                <li class="nav-item"><a class="nav-link" href="/artworks">Gallery</a></li>
-                <li class="nav-item"><a class="nav-link" href="/artworks/new">Add Artworks</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        About Ruopu
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">The Team</a>
-                        <a class="dropdown-item" href="#">Our values</a>
-                        <a class="dropdown-item" href="#">Main projects...</a>
-                    </div>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="./custom">Try your design!</a></li>
+
+                <!--Admin NavBar-->
+                <% if(isAdmin){ %>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="/authors" id="navbarDropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Authors
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="/authors">Authors</a>
+                            <a class="dropdown-item" href="/authors/new">Add Authors</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="/artworks" id="navbarDropdownMenuLink"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Gallery
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="/artworks">Gallery</a>
+                            <a class="dropdown-item" href="/artworks/new">Add Artworks</a>
+                        </div>
+                    </li>
+
+                    <%} else {%>
+                        <!--Visitor NavBar-->
+                        <li class="nav-item"><a class="nav-link" href="/artworks">Gallery</a></li>
+                        <%}%>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    About Ruopu
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="#">The Team</a>
+                                    <a class="dropdown-item" href="#">Our values</a>
+                                    <a class="dropdown-item" href="#">Main projects...</a>
+                                </div>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="./custom">Try your design!</a></li>
+                            <!--Change ./custom to /custom if i create a customs folder to add designs or something-->
             </ul>
 
-            <form class="form-inline align-right">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-warning my-2 my-sm-0" type="submit"
-                    style="/*background-color: #E4AF56; color: whitesmoke;*/">Search</button>
-            </form>
+            <ul class="navbar-nav">
+                <form class="form-inline">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-warning my-2 my-sm-0" type="submit"
+                        style="/*background-color: #E4AF56; color: whitesmoke;*/">Search</button>
+                </form>
 
-            <a class="btn btn-dark" href="#!" role="button">
-                <i class="fa fa-weixin"></i></a>
-            <a class="btn btn-dark" href="#!" role="button">
-                <i class="fa fa-twitter"></i></a>
-            <a class="btn btn-dark" href="#!" role="button">
-                <i class="fa fa-instagram"></i></a>
-            <a class="btn btn-dark" href="#!" role="button">
-                <i class="fa fa-linkedin"></i></a>
 
+                <div>
+                    <!--Login/out + logos-->
+                    <% if(userId){ %>
+                        <a class="btn btn-dark" href="/auth/logout" role="button">
+                            Logout <i class="fa fa-sign-out"></i></a>
+                        <%} else {%>
+                            <a class="btn btn-dark" href="/auth/login" role="button">
+                                Login <i class="fa fa-sign-in"></i></a>
+                        <%}%>                  
+
+                    <a class="btn btn-dark" href="#!" role="button">
+                        <i class="fa fa-weixin"></i></a>
+                    <!--
+                    <a class="btn btn-dark" href="#!" role="button">
+                        <i class="fa fa-twitter"></i></a>
+                    <a class="btn btn-dark" href="#!" role="button">
+                        <i class="fa fa-instagram"></i></a>
+                    <a class="btn btn-dark" href="#!" role="button">
+                        <i class="fa fa-linkedin"></i></a>
+                    -->
+                </div>
+            </ul>
         </div>
+
     </nav>
 </header>
 <br>
