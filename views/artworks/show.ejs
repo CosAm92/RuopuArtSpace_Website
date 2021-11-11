@@ -23,7 +23,7 @@
                         <a href="/artworks/<%=artwork.id%>/edit" class="btn btn-secondary">Edit</a>
                         <% } %> 
                 
-                <%- include('../partials/deleteForm', {url: `/artworks/${artwork.id}`}) %> 
+                <%- include('../partials/deleteForm', {url: `/artworks/${artwork.id}`, isAuthor: ''}) %> 
                 <a href="/artworks/<%=artwork.author.id%>" class="btn btn-primary">TODO: Go to Theme</a>
                 </div>
             </div>

@@ -24,7 +24,7 @@
                 <a href="articles/edit/<%= article.id %>" class="btn btn-info">Edit</a>
                 <% } %> 
                 
-                <%- include('../partials/deleteForm', {url: `/articles/${article.id}`}) %>
+                <%- include('../partials/deleteForm', {url: `/articles/${article.id}`, isAuthor: ''}) %>
             </div>
         </div>
         <% }) %>

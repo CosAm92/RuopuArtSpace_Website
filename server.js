@@ -62,6 +62,7 @@ app.use(function(req, res, next) {
 app.use(function(req, res, next) {
     res.locals.userId = req.session.userId;
     res.locals.isAdmin = req.session.userIsAdmin;
+    //res.locals.searchQuery = {}
     next();
 });
 

@@ -15,6 +15,6 @@
         <a href="/authors/<%= author.id%>" class="btn btn-primary">View</a>
         <a href="/authors/<%= author.id%>/edit" class="btn btn-info">Edit</a>
         <%- include('../partials/deleteForm', 
-        {url: `/authors/${author.id}`}) %> 
+        {url: `/authors/${author.id}`, isAuthor: ''}) %> 
         <% }) %>
 </div>

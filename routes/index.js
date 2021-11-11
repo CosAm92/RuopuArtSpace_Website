@@ -17,5 +17,4 @@ router.get('/', async (req, res) => {
     }
     res.render('index', {articles: articles, authors: authors})
 })
-
 module.exports = router
