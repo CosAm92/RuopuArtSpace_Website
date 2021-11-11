@@ -18,7 +18,7 @@ const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
 
 ///articles?page=1&limit=4
 router.get('/', paginationResults(Article), (req, res) => {
-    res.render('articles/index', { articles: res.paginationResults.results, next: res.paginationResults.next, previous: res.paginationResults.previous})
+    res.render('articles/index', { articles: res.paginationResults.results, next: res.paginationResults.next, previous: res.paginationResults.previous })
 })
 
 //Go to Create Form
@@ -51,15 +51,25 @@ router.get('/:slug', async (req, res) => {
         populate({
             path: 'comments',
             populate: {
-                path: 'replies'
+                path: 'replies',
+            }
+        }).
+        populate({
+            path: 'comments',
+            populate: {
+                path: 'replies',
+                populate: { //Triple deep population is ez
+                    path: 'author',
+                    select: 'pseudo email -_id'
+                }
             }
         }).exec() //We await/wait for the article before executing function
 
     //const next = await Article.findOne({createdAt: {$lt: article.createdAt}}).limit(1)
     //const previous = await Article.findOne({createdAt: {$gt: article.createdAt}}).limit(1)
 
-    const previous = await Article.findOne({_id: {$lt: article._id}}).sort({_id: -1}).limit(1)
-    const next = await Article.findOne({_id: {$gt: article._id}}).sort({_id: 1}).limit(1)
+    const previous = await Article.findOne({ _id: { $lt: article._id } }).sort({ _id: -1 }).limit(1)
+    const next = await Article.findOne({ _id: { $gt: article._id } }).sort({ _id: 1 }).limit(1)
 
     if (article == null) res.redirect('/articles') //If no articles are found, redirect to Articles
     res.render('articles/show', { article: article, previous: previous, next: next })
@@ -70,10 +80,10 @@ router.put('/:slug/like', async (req, res) => {
     try {
         const article = await Article.findOne({ slug: req.params.slug })
         //await article.updateOne({ $push: { likes: req.body.test } })
-        if(!article.likes.includes(req.body.userId)){
-            await article.updateOne({$push:{likes: req.body.userId}})
+        if (!article.likes.includes(req.body.userId)) {
+            await article.updateOne({ $push: { likes: req.body.userId } })
         } else {
-            await article.updateOne({$pull: {likes: req.body.userId}})
+            await article.updateOne({ $pull: { likes: req.body.userId } })
         }
         res.redirect(`/articles/${article.slug}`)
     } catch (err) {
@@ -86,10 +96,10 @@ router.put('/:slug/:commentId/like', async (req, res) => {
         const article = await Article.findOne({ slug: req.params.slug })
         let comment
         comment = await Comment.findById(req.params.commentId)
-        if(!comment.likes.includes(req.body.userId)){
-            await comment.updateOne({$push:{likes: req.body.userId}})
+        if (!comment.likes.includes(req.body.userId)) {
+            await comment.updateOne({ $push: { likes: req.body.userId } })
         } else {
-            await comment.updateOne({$pull: {likes: req.body.userId}})
+            await comment.updateOne({ $pull: { likes: req.body.userId } })
         }
         res.redirect(`/articles/${article.slug}`)
     } catch (err) {
@@ -150,7 +160,7 @@ router.post('/:slug', async (req, res, next) => {
     }).
         populate('comments').exec()
 
-    const author = await User.findOne({email: session.userId})
+    const author = await User.findOne({ email: session.userId })
 
     const comment = new Comment({
         author: author, //PLACEHOLDER -> CHANGE WHEN LOGIN/REGISTER CREATED
@@ -208,7 +218,10 @@ router.post('/:slug/:commentId', async (req, res, next) => {
 
     try {
         comment = await Comment.findById(req.params.commentId)
+        const author = await User.findOne({ email: session.userId })
+
         const reply = new Comment({
+            author: author,
             content: req.body.content,
             //createdAt: new Date(req.body.createdAt),
             article: article._id,
@@ -234,7 +247,9 @@ router.post('/:slug/:commentId', async (req, res, next) => {
 function saveArticleAndRedirect(path) {
     return async (req, res) => {
         let article = req.article
+        const author = await User.findOne({ email: session.userId })
         //Create a new article
+        article.author = author
         article.title = req.body.title
         article.summary = req.body.summary
         article.markdown = req.body.markdown
@@ -267,9 +282,12 @@ function renderArticle() {
             populate({
                 path: 'comments',
                 populate: {
-                    path: 'replies'
+                    path: 'replies',
+                    model: 'Comment'
                 }
-            }).exec()
+            })
+            .exec()
+
         res.redirect(`/articles/${article.slug}`)
     }
 }
@@ -340,8 +358,8 @@ function paginationResults(model) {
             res.paginationResults = results
             next()
         } catch (e) {
-            res.status(500).json({message: e.message})
-        }        
+            res.status(500).json({ message: e.message })
+        }
     }
 }
 

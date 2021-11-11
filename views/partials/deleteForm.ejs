@@ -1,5 +1,5 @@
 <!--Admin only (...it depends)-->
-<% if(isAdmin){ %> 
+<% if(isAdmin || (userId == isAuthor)){ %> 
 
 <form action="<%= url %>/?_method=DELETE" method="POST" class="d-inline">
     <!--POST is overrided by DELETE with the library method override-->

@@ -9,14 +9,18 @@
             <%= article.summary%>
         </p>
         <p class="font-italic">Written by
-            <% if(article.author !=null){ %>
+            <% //if(article.author !=null){ %>
                 <%= article.author.pseudo %>
-                    <% } %>
+                    <% //} %>
         </p>
         <a href="/articles?page=1&limit=3" role="button" class="btn btn-primary px-5">Back to All articles</a>
+        
+        <% if(isAdmin){ %> 
         <a href="/articles/edit/<%= article.id %>" class="btn btn-secondary">
             Edit
         </a>
+        <% } %> 
+
     </div>
 </div>
 
@@ -105,7 +109,7 @@
                         <!--AUTHORISATION TODO-->
                         <br>
                         <%- include('../partials/deleteForm', {url:
-                            `/articles/${article.slug}/${article.comments[i]._id}`}) %>
+                            `/articles/${article.slug}/${article.comments[i]._id}`, isAuthor: `${article.comments[i].author.email}`}) %>
                             
                             <!--Hard coded/To change later: only the author of the comment can edit it-->
                             <% if(userId==article.comments[i].author.email){%>
@@ -141,7 +145,9 @@
                                 <img class="d-flex mr-3 rounded-circle" src="/images/default-user.jpg"
                                     style="height: 3rem; width: 3rem;" alt="pp">
                                 <div class="media-body">
-                                    <h4 class="mt-0">User Name</h4>
+                                    <h4 class="mt-0">
+                                        <%= reply.author.pseudo %>
+                                    </h4>
                                     <div class="col-4">
                                     </div>
                                     <%= reply.content %>
@@ -150,11 +156,13 @@
                                         <div>
                                             <br>
                                             <%- include('../partials/deleteForm', {url:
-                                                `/articles/${article.slug}/${reply._id}`}) %>
+                                                `/articles/${article.slug}/${reply._id}`, isAuthor: `${reply.author.email}`}) %>
 
+<% if(userId==reply.author.email){%>
                                                 <button class="btn btn-primary" id="showEdit<%= reply._id%>"><i
                                                         class="fa fa-pencil" aria-hidden="true"></i>
                                                 </button>
+                                            <% } %> 
                                                 <div id="editComment<%= reply._id %>" style="display: none;">
                                                     <br>
                                                     <%- include('editComment', {url:
