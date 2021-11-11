@@ -77,17 +77,19 @@ router.get('/:slug', async (req, res) => {
 
 //Like an article
 router.put('/:slug/like', async (req, res) => {
+    const article = await Article.findOne({ slug: req.params.slug })
     try {
-        const article = await Article.findOne({ slug: req.params.slug })
         //await article.updateOne({ $push: { likes: req.body.test } })
-        if (!article.likes.includes(req.body.userId)) {
-            await article.updateOne({ $push: { likes: req.body.userId } })
+        
+        if (!article.likes.includes(session.userId)) {
+            await article.updateOne({ $push: { likes: session.userId } })
         } else {
-            await article.updateOne({ $pull: { likes: req.body.userId } })
+            await article.updateOne({ $pull: { likes: session.userId } })
         }
         res.redirect(`/articles/${article.slug}`)
-    } catch (err) {
-        res.status(500).json(err)
+    } catch {
+        res.redirect('/auth/login')
+        //res.status(500).json(err)
     }
 })
 
@@ -96,10 +98,10 @@ router.put('/:slug/:commentId/like', async (req, res) => {
         const article = await Article.findOne({ slug: req.params.slug })
         let comment
         comment = await Comment.findById(req.params.commentId)
-        if (!comment.likes.includes(req.body.userId)) {
-            await comment.updateOne({ $push: { likes: req.body.userId } })
+        if (!comment.likes.includes(session.userId)) {
+            await comment.updateOne({ $push: { likes: session.userId } })
         } else {
-            await comment.updateOne({ $pull: { likes: req.body.userId } })
+            await comment.updateOne({ $pull: { likes: session.userId } })
         }
         res.redirect(`/articles/${article.slug}`)
     } catch (err) {
