@@ -45,7 +45,7 @@ router.get('/:slug', async (req, res) => {
             path: 'comments',
             populate: {
                 path: 'author',
-                select: 'pseudo -_id', //exclude id
+                select: 'pseudo email -_id', //exclude id
             }
         }).
         populate({
@@ -69,12 +69,12 @@ router.get('/:slug', async (req, res) => {
 router.put('/:slug/like', async (req, res) => {
     try {
         const article = await Article.findOne({ slug: req.params.slug })
-        await article.updateOne({ $push: { likes: req.body.test } })
-        /*if(!article.likes.includes(req.body.userId)){
+        //await article.updateOne({ $push: { likes: req.body.test } })
+        if(!article.likes.includes(req.body.userId)){
             await article.updateOne({$push:{likes: req.body.userId}})
         } else {
             await article.updateOne({$pull: {likes: req.body.userId}})
-        }*/ //ADD WHEN USER LOGIN/REGISTER IS DONE
+        }
         res.redirect(`/articles/${article.slug}`)
     } catch (err) {
         res.status(500).json(err)
@@ -86,8 +86,11 @@ router.put('/:slug/:commentId/like', async (req, res) => {
         const article = await Article.findOne({ slug: req.params.slug })
         let comment
         comment = await Comment.findById(req.params.commentId)
-        await comment.updateOne({ $push: { likes: req.body.test } })
-        //
+        if(!comment.likes.includes(req.body.userId)){
+            await comment.updateOne({$push:{likes: req.body.userId}})
+        } else {
+            await comment.updateOne({$pull: {likes: req.body.userId}})
+        }
         res.redirect(`/articles/${article.slug}`)
     } catch (err) {
         res.status(500).json(err)
@@ -147,8 +150,10 @@ router.post('/:slug', async (req, res, next) => {
     }).
         populate('comments').exec()
 
+    const author = await User.findOne({email: session.userId})
+
     const comment = new Comment({
-        author: '613f7f62cb162826bc77ae14', //PLACEHOLDER -> CHANGE WHEN LOGIN/REGISTER CREATED
+        author: author, //PLACEHOLDER -> CHANGE WHEN LOGIN/REGISTER CREATED
         content: req.body.content,
         //createdAt: new Date(req.body.createdAt),
         article: article._id

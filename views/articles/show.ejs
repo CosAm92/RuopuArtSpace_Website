@@ -106,26 +106,31 @@
                         <br>
                         <%- include('../partials/deleteForm', {url:
                             `/articles/${article.slug}/${article.comments[i]._id}`}) %>
+                            
+                            <!--Hard coded/To change later: only the author of the comment can edit it-->
+                            <% if(userId==article.comments[i].author.email){%>
+                                <button class="btn btn-primary" id="showEdit<%- i%>"><i class="fa fa-pencil"
+                                        aria-hidden="true"></i>
+                                </button>
+                                <% } %>
 
-                            <button class="btn btn-primary" id="showEdit<%- i%>"><i class="fa fa-pencil"
-                                    aria-hidden="true"></i>
-                            </button>
-                            <div id="editComment<%- i%>" style="display: none;">
-                                <br>
-                                <%- include('editComment', {url: `/articles/${article.slug}/${article.comments[i]._id}`,
-                                    placeholder: `${article.comments[i].content}`}) %>
-                                    <button class="btn btn-danger" id="hideEdit<%- i%>">Cancel</button>
-                            </div>
+                                    <div id="editComment<%- i%>" style="display: none;">
+                                        <br>
+                                        <%- include('editComment', {url:
+                                            `/articles/${article.slug}/${article.comments[i]._id}`, placeholder:
+                                            `${article.comments[i].content}`}) %>
+                                            <button class="btn btn-danger" id="hideEdit<%- i%>">Cancel</button>
+                                    </div>
 
-                            <!--Nested Comments-->
-                            <div id="replyCom<%- i%>" style="display: none;">
-                                <form method="POST"
-                                    action="/articles/<%= article.slug %>/<%= article.comments[i]._id %>">
-                                    <br>
-                                    <%- include('newComment') %>
-                                        <button class="btn btn-danger" id="hideReply<%- i%>">Cancel</button>
-                                </form>
-                            </div>
+                                    <!--Nested Comments-->
+                                    <div id="replyCom<%- i%>" style="display: none;">
+                                        <form method="POST"
+                                            action="/articles/<%= article.slug %>/<%= article.comments[i]._id %>">
+                                            <br>
+                                            <%- include('newComment') %>
+                                                <button class="btn btn-danger" id="hideReply<%- i%>">Cancel</button>
+                                        </form>
+                                    </div>
                     </div>
 
                     <!--REPLY-->

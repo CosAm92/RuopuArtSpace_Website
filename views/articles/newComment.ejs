@@ -1,3 +1,4 @@
+<% if(userId){ %> 
 <div class="form-group">
     <input class="form-control" name="pseudo" placeholder="Username">
 </div>
@@ -9,3 +10,6 @@
         placeholder="Write your thoughts"></textarea>
 </div>
 <button type="submit" class="btn btn-primary">Submit</button>
+<% } else { %> 
+    You need to be logged in to leave a comment.
+    <% } %> 
