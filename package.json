@@ -1,6 +1,10 @@
 {
   "name": "ruopuartspace_website",
   "version": "1.0.0",
+  "engines": {
+    "node": "14.x",
+    "npm": "7.x"
+  },
   "description": "Creation of a showcase website (PWA) for the NGO Ruopu Art Space.",
   "main": "server.js",
   "scripts": {
