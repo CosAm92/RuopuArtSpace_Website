@@ -28,8 +28,11 @@ const artworkSchema = new mongoose.Schema({
         required: true
     },
     theme: {
-        type: String //TODO: change to array of Tags with Tag a predetermined object that can be modified (like author)
-        //1 theme = 1 color
+        type: String,
+        enum: ["Ruopu 1000", "Transform Now", "My Design Helps You"]
+    },
+    tags: {
+        type: Array
     }
 })
 
@@ -41,6 +44,8 @@ return `data:${this.imageType};charset=utf-8;base64,${
     this.image.toString('base64')}`
     }
 })
+
+artworkSchema.index({title: 'text', content: 'text', theme: 'text', tags: 'text'})
 
 module.exports = mongoose.model('Artwork', artworkSchema)
 module.exports.artworkImageBasePath = artworkImageBasePath

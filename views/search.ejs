@@ -1,0 +1,37 @@
+<h1>SEARCH</h1>
+
+<div class="container">
+    <h2>Articles in link with your search</h2>
+    <div class="d-flex justify-content-center flex-wrap-reverse">
+        <% articles.forEach(article=> { %>
+            <div class="card" style="width: 18rem; margin: 2rem;">
+                <a href="articles/<%= article.slug%>">
+                    <img class="card-img-top" src="<%= article.articleImagePath %>" alt="Card image cap">
+                </a>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <%= article.title %>
+                    </h4>
+                </div>
+            </div>
+            <br>
+            <% }) %>
+    </div>
+
+    <h2>Artworks in link with your search</h2>
+    <div class="d-flex justify-content-center flex-wrap-reverse">
+        <% artworks.forEach(artwork=> { %>
+            <div class="card" style="width: 18rem; margin: 2rem;">
+                <a href="articles/<%= artwork.id%>">
+                    <img class="card-img-top" src="<%= artwork.artworkImagePath %>" alt="Card image cap">
+                </a>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <%= artwork.title %>
+                    </h4>
+                </div>
+            </div>
+            <br>
+            <% }) %>
+    </div>
+</div>

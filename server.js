@@ -136,5 +136,7 @@ app.listen(port, () => {
     console.log(`Now listening on port ${port}`);
 });
 
+app.post('/search', indexRouter.searchAll)
+
 //app.use('/', indexRouter)
 //app.listen(process.env.PORT || 3000) //The server tells the PORT used, we put it at 3000
