@@ -49,7 +49,9 @@ router.post('/', async (req, res) => { //The library multer does the work of put
         author: req.body.author,
         createdAt: new Date(req.body.createdAt),
         //image: fileName,
-        content: req.body.content
+        content: req.body.content,
+        theme : req.body.theme,
+        tags : JSON.stringify(req.body.tags).replace(/]|[[]/g, '').replace(/\"/g, "").split(",") 
     })
 
     saveImage(artwork, req.body.image)
@@ -97,6 +99,8 @@ router.put('/:id', async (req, res) => {
         artwork.author = req.body.author
         artwork.createdAt = new Date(req.body.createdAt)
         artwork.content = req.body.content
+        artwork.theme = req.body.theme
+        artwork.tags = JSON.stringify(req.body.tags).replace(/]|[[]/g, '').replace(/\"/g, "").split(",") 
         if (req.body.image != null && req.body.image !== '') {
             saveImage(artwork, req.body.image)
         } //The default is null, we don't want to delete the cover
@@ -153,6 +157,7 @@ async function renderFormPage(res, artwork, form, hasError = false) { //res to r
         const params = {
             authors: authors,
             artwork: artwork
+
         }
         if (hasError) {
             if (form === 'edit') {

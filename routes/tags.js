@@ -10,11 +10,9 @@ router.get('/', async(req, res)=>{
 
 router.searchTags = async(req, res) => {
     try{
-        let searchTags = req.body.searchTags//searchTerm is the name of search form in header
+        let searchTags = req.body.searchTags
         let articles = await Article.find({ $text: { $search: searchTags}})
         let artworks = await Artwork.find({ $text: { $search: searchTags}})
-        //let articles = await Article.find({ tags: {$in:[searchTags]}})
-        //let artworks = await Artwork.find({ tags: {$in:[searchTags]}})
         res.render('search', {title: 'RAS - Search', articles, artworks})
     } catch(err) {
         res.status(500).send({message: err.message || "Error on Search"})

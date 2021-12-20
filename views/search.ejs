@@ -1,6 +1,11 @@
 <h1>SEARCH</h1>
 
 <div class="container">
+<% if(articles.length == 0 && artworks.length == 0){ %>
+    <h2>No results found...</h2>
+<%} %> 
+
+    <% if(articles.length>0){ %>
     <h2>Articles in link with your search</h2>
     <div class="d-flex justify-content-center flex-wrap-reverse">
         <% articles.forEach(article=> { %>
@@ -17,12 +22,14 @@
             <br>
             <% }) %>
     </div>
+<% } %>
 
+<% if(artworks.length>0){ %>
     <h2>Artworks in link with your search</h2>
     <div class="d-flex justify-content-center flex-wrap-reverse">
         <% artworks.forEach(artwork=> { %>
             <div class="card" style="width: 18rem; margin: 2rem;">
-                <a href="articles/<%= artwork.id%>">
+                <a href="artworks/<%= artwork.id%>">
                     <img class="card-img-top" src="<%= artwork.artworkImagePath %>" alt="Card image cap">
                 </a>
                 <div class="card-body">
@@ -34,4 +41,5 @@
             <br>
             <% }) %>
     </div>
+    <% } %>
 </div>
