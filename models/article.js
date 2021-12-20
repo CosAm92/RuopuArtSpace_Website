@@ -9,6 +9,12 @@ const User = require('./user')
 
 const articleImageBasePath = 'uploads/articleImage'
 
+/*const Themes = Object.freeze({
+    Ruopu1000: 'Ruopu 1000',
+    TransformNow: 'Transform Now',
+    MDHY: 'My Design Helps You'
+})*/
+
 const articleSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -58,12 +64,15 @@ const articleSchema = new mongoose.Schema({
     },
     theme: {
         type: String,
-        enum: ["Ruopu 1000", "Transform Now", "My Design Helps You"]
+        //enum: Object.values(Themes)
+        enum: ['Ruopu 1000', 'Transform Now', 'My Design Helps You']
     },
     tags: {
         type: Array
     }
 })
+
+/*Object.assign(articleSchema.statics, {Themes})*/
 
 //Set validation after creating slug from title
 articleSchema.pre('validate', function (next) {

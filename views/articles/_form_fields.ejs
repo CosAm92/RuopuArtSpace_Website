@@ -8,6 +8,73 @@
 </div>
 
 <div>
+    <br>
+    <label for="theme">Theme</label>
+    <select name="theme">
+        <% var themes=['Ruopu 1000', 'Transform Now' , 'My Design Helps You' ] %>
+            <% themes.forEach(theme=> { if(article.theme == theme){%>
+                <option selected label="<%= article.theme %>" value="<%= article.theme %>"></option>
+                <% } else { %>
+                    <option label="<%= theme %>" value="<%= theme%>"></option>
+                    <% }}); %>
+    </select>
+</div>
+
+<div>
+    <br>
+    <label for="tags">Tags
+        <span id='tagsList'>
+        </span>
+    </label>
+    <script>
+        var tagsArray = [];
+        function delTags(value) {
+            const index = tagsArray.indexOf(value)
+            if (index > -1) {
+                tagsArray.splice(index, 1);
+            }
+            document.getElementById("tag" + value).remove()
+            changeTags()
+        }
+
+        function addTags(value) {
+            if (!tagsArray.includes(value)) {
+                tagsArray.push(value);
+                var node = document.createElement("span")
+                node.className = "btn-dark"
+                node.id = "tag" + value
+                node.innerHTML = "#" + value + "<b> X</b> ; "
+                node.onclick = function () { delTags(value) }
+                document.getElementById("tagsList").appendChild(node);
+            }
+            changeTags()
+        }
+
+        function changeTags(){
+            if(document.getElementById("tags") != null){
+                document.getElementById("tags").innerText = tagsArray
+            } else {
+                var tagForm = document.createElement("textarea")
+                tagForm.id = "tags"
+                tagForm.name = "tags[]"
+                tagForm.innerText = tagsArray
+                document.getElementById("tagsList").appendChild(tagForm)
+            }
+        }
+    </script>
+
+    <% var tags=['SustainableDevelopment', 'Children' , 'Artwork' ] %>
+        <ul>
+            <% tags.forEach(function(e) { %>
+                <li class="list-group-item list-group-item-action" onclick="addTags('<%= e%>');">
+                    <%= e %>
+                </li>
+                <% }); %>
+            </ul>
+        <br>
+</div>
+
+<div>
     <label for="image">Image</label>
     <input type="file" name="image" id="image" class="filepond">
     <!--File inputs can't have a value-->

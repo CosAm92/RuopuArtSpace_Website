@@ -132,6 +132,9 @@ router.put('/:id', async (req, res) => {
         article.summary = req.body.summary
         article.markdown = req.body.markdown
 
+        article.theme = req.body.theme
+        article.tags = req.body.tags
+
         if (req.body.image != null && req.body.image !== '') {
             saveImage(article, req.body.image)
         } //The default is null, we don't want to delete the cover
@@ -274,7 +277,11 @@ function saveArticleAndRedirect(path) {
         article.title = req.body.title
         article.summary = req.body.summary
         article.markdown = req.body.markdown
-
+        //10/12 edit: new for Search by tags
+        article.theme = req.body.theme
+        article.tags = JSON.stringify(req.body.tags).replace(/]|[[]/g, '').replace(/\"/g, "").split(",") 
+        //Array.prototype.slice.call(req.body.tags.split(","))
+        
         saveImage(article, req.body.image) //OK ISSUE HERE
 
         //Save an article/Else redirect
