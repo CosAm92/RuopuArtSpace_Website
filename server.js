@@ -18,6 +18,7 @@ const authorRouter = require('./routes/authors')
 const artworkRouter = require('./routes/artworks')
 const userRouter = require('./routes/users')
 const authRouter = require('./routes/auth')
+const tagsRouter = require('./routes/tags')
 
 const app = express()
 const port = process.env.PORT || 5001;
@@ -73,6 +74,7 @@ app.use('/authors', authorRouter)
 app.use('/artworks', artworkRouter)
 app.use('/users', userRouter)
 app.use('/auth', authRouter)
+app.use('/tags', tagsRouter)
 app.get('/custom', (req, res) => {
     res.render('custom');
 });
@@ -137,6 +139,7 @@ app.listen(port, () => {
 });
 
 app.post('/search', indexRouter.searchAll)
+app.post('/tags', tagsRouter.searchTags)
 
 //app.use('/', indexRouter)
 //app.listen(process.env.PORT || 3000) //The server tells the PORT used, we put it at 3000

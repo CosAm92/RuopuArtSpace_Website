@@ -50,7 +50,16 @@
             <%- include("_like.ejs", {url:`/articles/${article.slug}/like`, replies: `${article.likes.length}`}) %>
         </div>
 
-        <div>#InsertTagsHere</div>
+        <!--TAGS-->
+        <div> <% if (article.tags != null){ %>
+            <% article.tags.forEach(tag => { %>
+        <form class="form-inline" action="/tags" method="POST">
+            <input hidden class="form-control mr-sm-2" type="search" name="searchTags" value="<%-tag%>" aria-label="Search">
+            <button class="tag" type="submit">#<%- tag%></button>
+        </form>
+        <% }) %>
+        <% }; %></div>
+       
 
         <div>
             <a class="btn btn-dark" href="#!" role="button">

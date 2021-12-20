@@ -24,10 +24,21 @@
     <br>
     <label for="tags">Tags
         <span id='tagsList'>
+            <% if (article.tags !=null && !article.tags.includes("")){ %>
+                <textarea hidden type="text" name="tags[]" id="tags" class="form-control"><%= article.tags %></textarea>
+                <% article.tags.forEach(tag=> { %>
+                    <span class="btn-dark" id="tag<%- tag%>" onclick="delTags('<%-tag%>')">#<%- tag%> <b> X</b> </span>
+                    <% }) %>
+                        <% }; %>
         </span>
     </label>
     <script>
-        var tagsArray = [];
+        var tagsArray = []
+        let articleTags = '<%- JSON.stringify(article.tags)%>' //Get array from EJS data
+        tagsArray = articleTags.replace(/]|[[]/g, '').replace(/\"/g, "").split(",") 
+        tagsArray = tagsArray.filter(item => item);
+        //Remove brackets and quotes in data and erase empty string from stringify issues
+
         function delTags(value) {
             const index = tagsArray.indexOf(value)
             if (index > -1) {
@@ -50,14 +61,15 @@
             changeTags()
         }
 
-        function changeTags(){
-            if(document.getElementById("tags") != null){
+        function changeTags() {
+            if (document.getElementById("tags") != null) {
                 document.getElementById("tags").innerText = tagsArray
             } else {
                 var tagForm = document.createElement("textarea")
                 tagForm.id = "tags"
                 tagForm.name = "tags[]"
                 tagForm.innerText = tagsArray
+                tagForm.hidden = true
                 document.getElementById("tagsList").appendChild(tagForm)
             }
         }
@@ -70,7 +82,7 @@
                     <%= e %>
                 </li>
                 <% }); %>
-            </ul>
+        </ul>
         <br>
 </div>
 

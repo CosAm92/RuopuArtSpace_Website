@@ -10,15 +10,20 @@ body {
     background-color: #e9edf1;
 }
 
-a, u {
+a, u, .tag {
     text-decoration: none;
     color: var(--ruopu-base);
 }
 
-a:hover, i:hover {
+a:hover, i:hover, .tag:hover {
     color: white;
     text-decoration: none;
     cursor: pointer;
+}
+
+.tag{
+    border: none;
+    background: none;
 }
 
 h5 {

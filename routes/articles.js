@@ -133,7 +133,7 @@ router.put('/:id', async (req, res) => {
         article.markdown = req.body.markdown
 
         article.theme = req.body.theme
-        article.tags = req.body.tags
+        article.tags = JSON.stringify(req.body.tags).replace(/]|[[]/g, '').replace(/\"/g, "").split(",") 
 
         if (req.body.image != null && req.body.image !== '') {
             saveImage(article, req.body.image)
@@ -280,6 +280,7 @@ function saveArticleAndRedirect(path) {
         //10/12 edit: new for Search by tags
         article.theme = req.body.theme
         article.tags = JSON.stringify(req.body.tags).replace(/]|[[]/g, '').replace(/\"/g, "").split(",") 
+        //Replace brackets and quotes that shouldn't be in the data
         //Array.prototype.slice.call(req.body.tags.split(","))
         
         saveImage(article, req.body.image) //OK ISSUE HERE
@@ -390,6 +391,5 @@ function paginationResults(model) {
         }
     }
 }
-
 
 module.exports = router //We can read this router everywhere
