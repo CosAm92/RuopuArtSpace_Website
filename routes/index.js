@@ -11,6 +11,9 @@ router.get('/', async (req, res) => {
     try {
         articles = await Article.find().sort({
             createdAt: 'desc'
+        }).populate({
+                path: 'author',
+                select: 'pseudo -_id', //exclude id
         }).limit(3).exec() //Get the 3 last articles
         authors = await Author.find().limit(4)
     } catch {

@@ -1,10 +1,10 @@
 <section>
-    <h1 id="text" style="top: 0;">Ruopu Art Space</h1>
+    <h1 class="text-center" id="text" style="top: 0;">Ruopu Art Space</h1>
     <img src="/images/watercolor2.png" id="wc2">
     <img style="width: 20rem; height: 18rem; border-radius: 10rem;" src="/images/watercolor3.jpg" id="wc3">
     <img style="width: 20rem; height: 18rem; border-radius: 10rem;" src="/images/watercolor1.jpg" id="wc1">
     <img style="width: 20rem; height: 18rem; border-radius: 10rem;" src="/images/girl.jpg" id="girl">
-    <div class="text-align left" id="text2">
+    <div class="text-center" id="text2">
         <h3>Our Mission/Values</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni quia cupiditate aliquid aut incidunt
             alias dolore quos doloribus.</p>
@@ -12,64 +12,176 @@
     </div>
 </section>
 
+<style>
+    div.card {
+        border: solid 3px;
+        border-radius: 2rem;
+        overflow: hidden;
+        border-color: #e4af56;
+        box-shadow: 10px 10px 5px -2px lightgray;
+    }
+
+    div.card:nth-child(2) {
+        border-color: #7DD2C1;
+    }
+
+    div.card:nth-child(3) {
+        border-color: #de6049;
+    }
+
+    .triangle {
+        width: 0;
+        height: 0;
+        border-top: 2rem solid transparent;
+        border-bottom: 2rem solid transparent;
+        border-right: 3rem solid #e4af56;
+        box-shadow: -10px 10px 5px -2px lightgray;
+        transform: rotate(200deg);
+    }
+</style>
+
+<style>
+    @keyframes slideUp {
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    .art-wrapper img:first-child {
+  transform: rotate(-10deg) translate(-30%, -30%);
+  opacity: 0;
+}
+
+    @keyframes slideFirstImage {
+        to {
+            transform: translate(0%, 0%);
+            opacity: 1;
+        }
+    }
+
+    .art-wrapper img:nth-child(2) {
+  transform: rotate(23deg) translate(-20%, 20%);
+  opacity: 0;
+}
+
+@keyframes slideSecondImage {
+  to {
+    transform: rotate(26deg) translate(0%, 0%);
+    opacity: 1;
+  }
+}
+</style>
+
+<!--Latest News: Shows the 3 most recent articles-->
+<br>
 <div class="container">
-    <!--Latest News: Shows the 3 most recent articles-->
-    <h2 class="text-center">Last News</h2>
+    <h2 class="text-center" style="color: #7DD2C1;"><b>Last News</b></h2>
+    <p style="margin: 0% 20%;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic laborum quisquam nihil
+        facere. Hic accusamus commodi qui, voluptas, error repudiandae magni eius quo eligendi vero aliquam unde, quasi
+        dolor maxime?</p>
     <div class="d-flex justify-content-center flex-wrap">
         <% articles.forEach(article=> { %>
             <div class="card mt-4" style="width: 18rem; margin: 2rem;">
                 <div class="card-body">
                     <h4 class="card-title">
-                        <%= article.title %>
+                        <%= article.title %> - <%= article.createdAt.toLocaleDateString() %>
                     </h4>
-                    <div class="card-subtitle text-muted mb-2">
-                        <%= article.createdAt.toLocaleDateString() %>
-                    </div>
                     <div class="card-ext mb-2">
                         <%= article.summary %>
                     </div>
-                    <a href="articles/<%= article.slug %>" class="btn btn-primary">Read More</a>
+                    <hr />
+                    <div class="d-flex justify-content-between">
+                        <img class="rounded-circle" style="width: 2rem; height: 2rem; "
+                            src="https://via.placeholder.com/150">
+                        <!--author or user.userImagePath-->
+                        <span>Written by <%= article.author.pseudo %></span>
+                        <a href="articles/<%= article.slug %>" class="btn"
+                            style="background-color: #e4af56; border-radius: 5rem;"><i class="bi bi-book"> </i></a>
+                    </div>
                 </div>
             </div>
             <% }) %>
     </div>
+    <br>
+    <div style="text-align:center">
+        <a href="articles" class="btn btn-outline-dark">See more</a>
+    </div>
 </div>
 
-<!--
-<section>
-    <h1 id="text" style="top: 0;">Art is for Everyone</h1>
-    <img style="width: 10rem; height: 9rem; top: 10rem; left:10rem;" src="/images/watercolor2.png">
-    <img style="width: 10rem; height: 9rem; right: 10rem;" src="/images/watercolor3.jpg">
-    <img style="width: 10rem; height: 15rem; top: 20rem;" src="/images/watercolor1.jpg">
-    <img style="width: 20rem; height: 9rem; left: 10rem;" src="/images/girl.jpg">
-    <div>
-        <h3>Lorem ipsum</h3>
-        <p> dolor sit amet, consectetur adipisicing elit. Magni quia cupiditate aliquid aut incidunt
-            alias dolore quos doloribus.</p>
-    </div>
-    <div>
-        <h3>Lorem ipsum</h3>
-        <p> dolor sit amet, consectetur adipisicing elit. Magni quia cupiditate aliquid aut incidunt
-            alias dolore quos doloribus.</p>
-    </div>
-    <div>
-        <h3>Lorem ipsum</h3>
-        <p> dolor sit amet, consectetur adipisicing elit. Magni quia cupiditate aliquid aut incidunt
-            alias dolore quos doloribus.</p>
-    </div>
-    <a id="btn" href="artworks" class="btn btn-primary">See Gallery</a>
-</section>
+<!--Art is for everyone: Shows pictures and motivational text-->
+<br>
+<h2 class="text-center">Art is for Everyone</h2>
+<p style="margin: 0% 20%;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic laborum quisquam nihil
+    facere. Hic accusamus commodi qui, voluptas, error repudiandae magni eius quo eligendi vero aliquam unde, quasi
+    dolor maxime?</p>
+
+<section class="art-section">
+    <!--
+        <img class="art1" style="width: 10rem; height: 9rem; top: 10rem; left:10rem;" src="/images/watercolor2.png">
+    <img class="art2" style="width: 10rem; height: 9rem; right: 10rem;" src="/images/watercolor3.jpg">
+    <img id="art3" style="width: 10rem; height: 15rem; top: 20rem;" src="/images/watercolor1.jpg">
+    <img id="art4" style="width: 20rem; height: 9rem; left: 10rem;" src="/images/girl.jpg"> 
 -->
 
+<img src="/images/watercolor2.png" style="width: 10rem; height: 9rem" >
+<img src="/images/watercolor3.png" style="width: 10rem; height: 9rem" >
+
+    <div id="art1t">
+        <h3>Lorem ipsum</h3>
+        <p> dolor sit amet, consectetur adipisicing elit. Magni quia cupiditate aliquid aut incidunt
+            alias dolore quos doloribus.</p>
+    </div>
+    <div id="art2t">
+        <h3>Lorem ipsum</h3>
+        <p> dolor sit amet, consectetur adipisicing elit. Magni quia cupiditate aliquid aut incidunt
+            alias dolore quos doloribus.</p>
+    </div>
+    <div id="art3t">
+        <h3>Lorem ipsum</h3>
+        <p> dolor sit amet, consectetur adipisicing elit. Magni quia cupiditate aliquid aut incidunt
+            alias dolore quos doloribus.</p>
+    </div>
+</section>
+
+<div style="text-align:center">
+    <a href="artworks" class="btn btn-outline-dark">See Gallery</a>
+</div>
+
+<!--MtT: Shows main employees of the NGO-->
+<br>
 <div class="container">
-    <h2 class="text-center">Meet the Team</h2>
+    <h2 class="text-center"><b>Meet the Team</b></h2>
+    <p style="margin: 0% 20%;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic laborum quisquam nihil
+        facere. Hic accusamus commodi qui, voluptas, error repudiandae magni eius quo eligendi vero aliquam unde, quasi
+        dolor maxime?</p>
     <div class="d-flex justify-content-center flex-wrap">
-        <% authors.forEach(author=>{ %>
-            <%= author.name %>
-                <% }) %>
+        <%var teamMembers=["Liu Ye", "Yang Yi" , "Qian Yuxi" , "Amanda Dieuaide" ]%>
+            <%var roles=["Director", "Deputy Director" , "Translator" , "Intern" ]%>
+                <%var Linlinks=["#", "#" , "#" , "https://www.linkedin.com/in/AmandaDieuaide" ]%>
+                    <%var Weilinks=["#", "#" , "#" , "#" ]%>
+                        <% for(var i=0; i <teamMembers.length; i++ ) { %>
+                            <div class="d-flex text-center flex-column" style="margin: 2rem;">
+                                <img class="rounded-circle" style="width: 10rem; height: 10rem; margin-bottom: 2rem;"
+                                    src="/images/ras_girl.png">
+                                <h4>
+                                    <%= teamMembers[i]%>
+                                </h4>
+                                <p>
+                                    <%= roles[i]%>
+                                </p>
+                                <span>
+                                    <a href="<%= Linlinks[i]%>"><i class="fa fa-linkedin"></i></a>
+                                    <a href="<%= Weilinks[i]%>"><i class="fa fa-weixin"></i></a>
+                                </span>
+                            </div>
+                            <% } %>
+    </div>
+    <div style="text-align:center">
+        <a href="#" class="btn btn-outline-dark">View the team</a>
     </div>
 </div>
 
+<!--Functions-Animations-->
 <script>
     let wc2 = document.getElementById('wc2');
     let wc1 = document.getElementById('wc1');
@@ -81,12 +193,29 @@
 
     window.addEventListener('scroll', function () {
         let value = window.scrollY;
-        wc2.style.top = value*0.5 + 'px';
+        wc2.style.top = value * 0.5 + 'px';
         wc3.style.left = value + 'px';
         girl.style.left = value + 'px';
         girl.style.top = value + 'px';
         wc1.style.top = value * 1.5 + 'px';
         text.style.marginTop = value * 0.75 + 'px';
         text2.style.marginLeft = value * 2 + 'px';
+    })
+</script>
+
+<script>
+    const memoriesSection = document.querySelector('.art-section')
+    const artworks = document.querySelectorAll('.art-wrapper img')
+
+    document.addEventListener('scroll', function () {
+        const clientHeight = document.documentElement.clientHeight;
+        const memoriesSectionY = memoriesSection.getBoundingClientRect().y;
+        const memoriesSectionHeight = memoriesSection.getBoundingClientRect().height;
+
+        //Make sure the highest point of the section is in the viewpoint and 2/3 of the section's height
+        if (clientHeight > memoriesSectionY + memoriesSectionHeight * 2 / 3) {
+            //alert("DFFFFFFFF")
+            artworks[0].style.animation = 'slideFirstImage 1s forwards cubic-bezier(0.22, 1, 0.36, 1)';
+        }
     })
 </script>
