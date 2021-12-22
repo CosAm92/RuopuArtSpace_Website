@@ -11,15 +11,15 @@
                         <%= artwork.title %> by <%= artwork.author.name %>
                     </h2>
                     <h6><%= artwork.createdAt.toLocaleDateString() %></h6>
-                    <h4>Theme/Category</h4>
-                    <p><%= artwork.theme%></p>
-                    <h4>Content</h4>
+                    <h4>Theme - <%= artwork.theme%></h4>
+                    <br><hr><br>
                     <p><%= artwork.content%></p>
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi amet quis
                         possimus et aperiam quo quasi quos ad, nisi labore ipsum, recusandae, saepe laborum rem.
                         Assumenda sunt corrupti iure animi.</p>
                     
                         <% if(isAdmin){ %> 
+                            <br>
                         <a href="/artworks/<%=artwork.id%>/edit" class="btn btn-secondary">Edit</a>
                         <% } %> 
                 
