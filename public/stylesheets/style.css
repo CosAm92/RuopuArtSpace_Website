@@ -82,3 +82,22 @@ section img #girl {
     overflow: visible;
     color: var(--ruopu--theme-dark);
 }
+
+/*Pagination*/
+
+.page-item{
+    font-size: larger;
+    padding: .8rem;
+}
+
+.page-item.active > a {
+    color: #3b3723;
+}
+
+.page-item > a > i {
+    color: lightgray;
+}
+
+.page-item.active > a > i {
+    color: #3b3723;
+}

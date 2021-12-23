@@ -1,23 +1,19 @@
 <style>
-.card{
-    position: relative;
-    box-shadow: 10px 10px 5px -2px lightgray;
-}
+    .card {
+        position: relative;
+        box-shadow: 10px 10px 5px -2px lightgray;
+    }
 
-.card:hover {
-  box-shadow: 10px 10px 5px -2px rgb(206, 206, 206);
-}
+    .card:hover {
+        box-shadow: 10px 10px 5px -2px rgb(206, 206, 206);
+    }
 
-.card-body{
-    position: absolute;
-    width: 100%;
-    background-color: white;
-    bottom: 0;
-}
-
-.art-anchor:hover{
-    color: #7dd2c1;
-}
+    .card-body {
+        position: absolute;
+        width: 100%;
+        background-color: #3b3723;
+        bottom: 0;
+    }
 </style>
 
 <!-- Bootstrap Static Header (with Opacity change for article image)-->
@@ -39,10 +35,10 @@
 <div class="container">
     <h2>Search Artworks</h2>
     <form action="/artworks" method="GET">
-            <input hidden type="text" name="page" class="form-control rounded" value="1">
-            
-            <input hidden type="text" name="limit" class="form-control rounded" value="3">
-            <label>Title</label>
+        <input hidden type="text" name="page" class="form-control rounded" value="1">
+
+        <input hidden type="text" name="limit" class="form-control rounded" value="3">
+        <label>Title</label>
         <div class="input-group">
             <input type="text" name="title" class="form-control rounded" value="<%= searchOptions.title %>">
         </div>
@@ -60,13 +56,13 @@
             <div class="card" style="width: 18rem; margin: 2rem;">
                 <a href="/artworks/<%= artwork.id%>" class="art-anchor">
                     <img class="card-img-top" src="<%= artwork.artworkImagePath %>" alt="Card image cap">
-                
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <%= artwork.title %>
-                    </h4>
-                </div>
-            </a>
+
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <%= artwork.title %>
+                        </h4>
+                    </div>
+                </a>
             </div>
             <br>
             <% }) %>
@@ -74,18 +70,40 @@
 
     <!--Put a PAGINATION between Articles with miniatures-->
     <hr>
-    <%=artworks.length%>
-    <div class="d-flex justify-content-between">
-        <% if(previous !=null) {%>
-            <a href="artworks?page=<%= previous['page'] %>&limit=<%= previous['limit']%>&title=<%= previous['title']%>">
-                <i class="fa fa-angle-left"></i>
-                Previous <%= previous['page']%></a>
-            <% } %>
-                <% if(next !=null) {%>
-                    <a href="artworks?page=<%- next['page'] %>&limit=<%- next['limit']%>&title=<%= next['title']%>">
-                        <%- next['page'] %> Next
-                            <i class="fa fa-angle-right"></i>
-                    </a>
-                    <% } %>
+    <div class="d-flex justify-content-center">
+        <ul class="pagination">
+            <% var active = "active"%>
+            <% if(previous !=null) {%>
+                <li class="page-item">
+                    <a class="p-link"
+                        href="artworks?page=<%= previous['page'] %>&limit=<%= previous['limit']%>&title=<%= previous['title']%>">
+                        <i class="fa fa-angle-left"></i>
+                        Previous</a>
+                </li>
+                <% } %>
+
+                    <% for(var i=1; i<=count['count']; i++) { %>
+                        <li class="page-item <% if((previous !=null && previous['page'] == (i-1)) || (next !=null && next['page'] == (i+1))) {%>
+                            <%= active%>
+                            <%}%>">
+                            <a 
+                            class="p-link"
+                                href="artworks?page=<%= i%>&limit=<%= count['limit']%>&title=<%= count['title']%>">
+                                <i class="fa fa-circle"></i>
+                            <br>
+                            <%= i%>
+                            </a></li>
+                        <%}%>
+
+                            <% if(next !=null) {%>
+                                <li class="page-item">
+                                    <a class="p-link"
+                                        href="artworks?page=<%- next['page'] %>&limit=<%- next['limit']%>&title=<%= next['title']%>">
+                                       Next
+                                            <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </li>
+                                <% } %>
+        </ul>
     </div>
 </div>

@@ -79,7 +79,7 @@ const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif'] //We want the se
 
 
 router.get('/', paginationResults(Artwork), async (req, res) => {
-    res.render('artworks/index', { artworks: res.paginationResults.results, next: res.paginationResults.next, previous: res.paginationResults.previous, searchOptions: req.query })
+    res.render('artworks/index', { artworks: res.paginationResults.results, next: res.paginationResults.next, previous: res.paginationResults.previous, count: res.paginationResults.count, searchOptions: req.query })
 })
 
 //New artwork route
@@ -240,13 +240,13 @@ function paginationResults(model) {
         const startIndex = (page - 1) * limit
         const endIndex = page * limit
         //title: { $regex: /^title/i}
-        let test = await model.find({ title: { $regex: title }}).countDocuments()
+        let count = await model.find({ title: { $regex: title }}).countDocuments()
         if (title == '' || title == null) {
-            test = await model.find().countDocuments()
+            count = await model.find().countDocuments()
         }
 
         const results = {}
-        if (endIndex < test) {
+        if (endIndex < count) {
             results.next = {
                 page: page + 1,
                 limit: limit,
@@ -275,7 +275,14 @@ function paginationResults(model) {
                 query = query.regex('title', new RegExp(title, 'i'))
             }*/
 
+            
+
             results.results = await query.exec()
+            results.count = {
+                count: Math.ceil(count/limit),
+                limit: limit,
+                title: title
+            }
 
             res.paginationResults = results
             next()

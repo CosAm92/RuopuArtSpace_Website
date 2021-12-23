@@ -18,7 +18,7 @@ const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif']
 
 ///articles?page=1&limit=4
 router.get('/', paginationResults(Article), (req, res) => {
-    res.render('articles/index', { articles: res.paginationResults.results, next: res.paginationResults.next, previous: res.paginationResults.previous })
+    res.render('articles/index', { articles: res.paginationResults.results, next: res.paginationResults.next, previous: res.paginationResults.previous, count: res.paginationResults.count })
 })
 
 //Go to Create Form
@@ -364,9 +364,10 @@ function paginationResults(model) {
         const limit = parseInt(req.query.limit)
         const startIndex = (page - 1) * limit
         const endIndex = page * limit
+        const count = await model.countDocuments().exec()
 
         const results = {}
-        if (endIndex < await model.countDocuments().exec()) {
+        if (endIndex < count) {
             results.next = {
                 page: page + 1,
                 limit: limit
@@ -378,6 +379,11 @@ function paginationResults(model) {
                 page: page - 1,
                 limit: limit
             }
+        }
+
+        results.count = {
+            count: Math.ceil(count/limit),
+            limit: limit
         }
 
         try {
