@@ -86,12 +86,49 @@ router.get('/:id', async (req, res) => {
 
 router.get('/:id/edit', async (req, res) => {
     try {
-            const user = await User.findById(req.params.id)
-            res.render("users/edit", { user: user })
+        const user = await User.findById(req.params.id)
+        res.render("users/edit", { user: user })
     } catch {
         res.redirect('/')
     }
 })
+
+router.get('/:id/edit_pw', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        res.render("users/edit_pw", { user: user })
+    } catch {
+        res.redirect('/')
+    }
+})
+
+router.put('/:id/edit_pw', async (req, res) => {
+    let user
+    try {
+        user = await User.findById(req.params.id)
+
+        const old_pw = await bcrypt.compare(req.body.old_password, user.password)
+        !old_pw && res.status(404).json("Wrong password")
+        
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(req.body.new_password, salt)
+        user.password = hashedPassword
+
+        await user.save()
+        res.redirect(`/users/${user._id}`)
+
+    } catch {
+        if (user == null) {
+            res.redirect('/')
+        } else {
+            res.render('users/edit', {
+                user: user,
+                errorMessage: 'Error updating User'
+            })
+        }
+    }
+})
+
 
 router.put('/:id', authUser, async (req, res) => {
     let user

@@ -5,6 +5,10 @@
     <form action="/users/<%= user.id %>?_method=PUT" method="POST">
         <%- include('_form_fields') %>
     </form>
+    
+    <%if(isAdmin == false && (user_id == user.id)){%>
+    <a href="/users/<%= user.id%>/edit_pw">Change your password?</a>
+    <%}%>
 </div>
 
 <% } %> 
