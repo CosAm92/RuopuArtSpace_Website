@@ -34,10 +34,6 @@ h5 {
     color: var(--ruopu--theme-dark);
 }
 
-.card-body {
-    /*background-color: var(--ruopu-gold);*/
-}
-
 section {
     position: relative;
     width: 100%;
