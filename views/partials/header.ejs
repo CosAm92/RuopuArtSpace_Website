@@ -10,10 +10,23 @@
             <ul class="navbar-nav mr-auto">
                 <!--mr-auto to align last ul to the right is me-auto in Bootstrap 5-->
                 <li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="/articles?page=1&limit=3">Events</a></li>
+                <li class="nav-item"><a class="nav-link" href="/articles?page=1&limit=3">News&Events</a></li>
 
                 <!--Admin NavBar-->
-                <% if(isAdmin){ %>
+                <%if(isAdmin) {%>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="/users?page=1&limit=3&name=" id="navbarDropdownMenuLink"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Users
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/users?page=1&limit=3&name=">Users</a>
+                        <a class="dropdown-item" href="/users/new">Add User</a>
+                    </div>
+                </li>
+                <%}%>
+                <% if(isAdmin || (userRole == "Author")){ %>
+                    <!--
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="/authors" id="navbarDropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -24,6 +37,7 @@
                             <a class="dropdown-item" href="/authors/new">Add Authors</a>
                         </div>
                     </li>
+                    -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="/artworks?page=1&limit=3&title=" id="navbarDropdownMenuLink"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -34,21 +48,25 @@
                             <a class="dropdown-item" href="/artworks/new">Add Artworks</a>
                         </div>
                     </li>
-
+                
                     <%} else {%>
                         <!--Visitor NavBar-->
                         <li class="nav-item"><a class="nav-link" href="/artworks?page=1&limit=3&title=">Gallery</a></li>
                         <%}%>
 
+                    <% if(userId && user_id){ %>
+                        <li class="nav-item"><a class="nav-link" href="/users/<%- user_id%>">Profile</a></li>
+                    <%}%>
+                    
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     About Ruopu
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                    <a class="dropdown-item" href="#">The Team</a>
-                                    <a class="dropdown-item" href="#">Our values</a>
-                                    <a class="dropdown-item" href="#">Main projects...</a>
+                                    <a class="dropdown-item" href="/#Team">The Team</a>
+                                    <a class="dropdown-item" href="/#Val">Our values</a>
+                                    <a class="dropdown-item" href="/articles?page=1&limit=3">Main projects...</a>
                                 </div>
                             </li>
                             <li class="nav-item"><a class="nav-link" href="/custom">Try your design!</a></li>
@@ -74,8 +92,10 @@
                                 Login <i class="fa fa-sign-in"></i></a>
                         <%}%>                  
 
-                    <a class="btn btn-dark" href="#!" role="button">
+                    <a class="btn btn-dark" href="https://mp.weixin.qq.com/s/9TV6utO_rFaZCZp-wPbQxg" role="button">
                         <i class="fa fa-weixin"></i></a>
+                    <a href="/">EN</a>
+                    <a href="http://www.ruopuspace.com/">CN</a>
                     <!--
                     <a class="btn btn-dark" href="#!" role="button">
                         <i class="fa fa-twitter"></i></a>

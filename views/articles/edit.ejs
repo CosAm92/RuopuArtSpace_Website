@@ -1,4 +1,4 @@
-<% if(isAdmin){ %> 
+<% if(isAdmin || (userRole == "Author")){ %> 
 <div class="container">
     <h1 class="mb-4">Edit article</h1>
     <form action="/articles/<%= article.id %>?_method=PUT" method="POST">

@@ -118,8 +118,7 @@ router.post('/', async (req, res) => { //The library multer does the work of put
 //Show info
 router.get('/:id', async (req, res) => {
     try {
-        const artwork = await Artwork.findById(req.params.id)
-            .populate('author').exec() //populate makes the id the full object
+        const artwork = await Artwork.findById(req.params.id).exec()
         res.render('artworks/show', { artwork: artwork })
     } catch {
         res.redirect('/')
@@ -168,7 +167,7 @@ router.delete('/:id', async (req, res) => {
         artwork = await Artwork.findById(req.params.id)
         //TODO: use fs unlink path to image to remove image 
         await artwork.remove()
-        res.redirect('/artworks')
+        res.redirect('/artworks?page=1&limit=3&title=')
     } catch {
         if (artworks != null) //If the artwork exist
         {
@@ -200,11 +199,10 @@ async function renderEditPage(res, artwork, hasError = false) {
 //Optimization to avoid duplicating code for New/Edit
 async function renderFormPage(res, artwork, form, hasError = false) { //res to render/redirect, artwork = new or existing one
     try {
-        const authors = await Author.find({})
+        const author = artwork.author
         const params = {
-            authors: authors,
+            author: author,
             artwork: artwork
-
         }
         if (hasError) {
             if (form === 'edit') {
@@ -215,7 +213,7 @@ async function renderFormPage(res, artwork, form, hasError = false) { //res to r
         }
         res.render(`artworks/${form}`, params)
     } catch {
-        res.redirect('/artworks')
+        res.redirect('/artworks?page=1&limit=3&title=')
     }
     //res.render("artwork/new", { artwork: new Artwork() })
 }

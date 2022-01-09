@@ -1,0 +1,84 @@
+<%if(isAdmin){ %> 
+<div class="container">
+    <h2>Search Users</h2>
+    <form action="/users" method="GET">
+        <input hidden type="text" name="page" class="form-control rounded" value="1">
+
+        <input hidden type="text" name="limit" class="form-control rounded" value="3">
+
+        <label>Name</label>
+        <div class="input-group">
+            <input type="text" name="name" class="form-control rounded" value="<%= searchOptions.name %>">
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+        </div>
+    </form>
+    <br>
+
+    <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#UserId</th>
+            <th scope="col">Pseudonym</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <th scope="col">isAdmin</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+            <% users.forEach(user=> { %>
+                <tr>
+                    <th scope="row"><%= user.id%></th>
+                <td><%= user.pseudo %></td>
+                <td><%= user.email %></td>
+                <td><%= user.role %></td>
+                <td><%= user.isAdmin %></td>
+                <td>
+                <a href="/users/<%= user.id%>/edit" class="btn btn-info">Edit</a>
+                <%- include('../partials/deleteForm', 
+                {url: `/users/${user.id}`, isAuthor: ''}) %> 
+                </td>
+               </tr>
+               <% }) %>
+    </tbody>
+</table>
+    <!--Put a PAGINATION-->
+    <hr>
+    <div class="d-flex justify-content-center">
+        <ul class="pagination">
+            <% var active = "active"%>
+            <% if(previous !=null) {%>
+                <li class="page-item">
+                    <a class="p-link"
+                        href="users?page=<%= previous['page'] %>&limit=<%= previous['limit']%>&name=<%= previous['name']%>">
+                        <i class="fa fa-angle-left"></i>
+                        Previous</a>
+                </li>
+                <% } %>
+
+                    <% for(var i=1; i<=count['count']; i++) { %>
+                        <li class="page-item <% if((previous !=null && previous['page'] == (i-1)) || (next !=null && next['page'] == (i+1))) {%>
+                            <%= active%>
+                            <%}%>">
+                            <a 
+                            class="p-link"
+                                href="users?page=<%= i%>&limit=<%= count['limit']%>&name=<%= count['name']%>">
+                                <i class="fa fa-circle"></i>
+                            <br>
+                            <%= i%>
+                            </a></li>
+                        <%}%>
+
+                            <% if(next !=null) {%>
+                                <li class="page-item">
+                                    <a class="p-link"
+                                        href="users?page=<%- next['page'] %>&limit=<%- next['limit']%>&name=<%= next['name']%>">
+                                       Next
+                                            <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </li>
+                                <% } %>
+        </ul>
+    </div>
+</div>
+<%}%>

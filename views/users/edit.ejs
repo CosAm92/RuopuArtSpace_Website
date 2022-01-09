@@ -1,0 +1,10 @@
+<%if(isAdmin || (user_id == user.id)){ %> 
+
+<div class="container">
+    <h1 class="mb-4">Edit user profile</h1>
+    <form action="/users/<%= user.id %>?_method=PUT" method="POST">
+        <%- include('_form_fields') %>
+    </form>
+</div>
+
+<% } %> 

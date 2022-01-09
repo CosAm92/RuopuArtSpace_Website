@@ -2,7 +2,7 @@
     <h1 class="mb-4"> Recent events (Articles and Workshops)
 
     </h1> <!-- We pass js objects though %-->
-    <% if(isAdmin){ %> 
+    <% if(isAdmin || (userRole == "Author")){ %> 
     <a href="/articles/new" class="btn btn-success">New Article</a>
     <% } %> 
 
@@ -20,7 +20,7 @@
                 </div>
                 <a href="articles/<%= article.slug %>" class="btn btn-primary">Read More</a>
 
-                <% if(isAdmin){ %> 
+                <% if(isAdmin || (userRole == "Author" && userId == article.author.email)){ %> 
                 <a href="articles/edit/<%= article.id %>" class="btn btn-info">Edit</a>
                 <% } %> 
                 

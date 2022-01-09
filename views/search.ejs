@@ -1,45 +1,71 @@
-<h1>SEARCH</h1>
+<style>
+    .art.card {
+        position: relative;
+        box-shadow: 10px 10px 5px -2px lightgray;
+    }
+
+    .art.card:hover {
+        box-shadow: 10px 10px 5px -2px rgb(206, 206, 206);
+    }
+
+    .art.card-body {
+        position: absolute;
+        width: 100%;
+        background-color: #3b3723;
+        bottom: 0;
+    }
+</style>
 
 <div class="container">
-<% if(articles.length == 0 && artworks.length == 0){ %>
-    <h2>No results found...</h2>
-<%} %> 
+    <h1>Search Results:</h1>
 
-    <% if(articles.length>0){ %>
-    <h2>Articles in link with your search</h2>
-    <div class="d-flex justify-content-center flex-wrap-reverse">
-        <% articles.forEach(article=> { %>
-            <div class="card" style="width: 18rem; margin: 2rem;">
-                <a href="articles/<%= article.slug%>">
-                    <img class="card-img-top" src="<%= article.articleImagePath %>" alt="Card image cap">
-                </a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <%= article.title %>
-                    </h4>
-                </div>
-            </div>
-            <br>
-            <% }) %>
-    </div>
-<% } %>
+    <% if(articles.length==0 && artworks.length==0){ %>
+        <h2>No results found...</h2>
+        <%} %>
 
-<% if(artworks.length>0){ %>
-    <h2>Artworks in link with your search</h2>
-    <div class="d-flex justify-content-center flex-wrap-reverse">
-        <% artworks.forEach(artwork=> { %>
-            <div class="card" style="width: 18rem; margin: 2rem;">
-                <a href="artworks/<%= artwork.id%>">
-                    <img class="card-img-top" src="<%= artwork.artworkImagePath %>" alt="Card image cap">
-                </a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <%= artwork.title %>
-                    </h4>
-                </div>
-            </div>
-            <br>
-            <% }) %>
-    </div>
-    <% } %>
+            <% if(articles.length>0){ %>
+                <h2>Articles in link with your search</h2>
+                <% articles.forEach(article=> { %>
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <%= article.title %>
+                            </h4>
+                            <div class="card-subtitle text-muted mb-2">
+                                <%= article.createdAt.toLocaleDateString() %>
+                            </div>
+                            <div class="card-ext mb-2">
+                                <%= article.summary %>
+                            </div>
+                            <a href="articles/<%= article.slug %>" class="btn btn-primary">Read More</a>
+            
+                            <% if(isAdmin){ %> 
+                            <a href="articles/edit/<%= article.id %>" class="btn btn-info">Edit</a>
+                            <% } %> 
+                            
+                            <%- include('partials/deleteForm', {url: `/articles/${article.id}`, isAuthor: ''}) %>
+                        </div>
+                    </div>
+                    <% }) %>
+                <% } %>
+<br>
+                    <% if(artworks.length>0){ %>
+                        <h2>Artworks in link with your search</h2>
+                        <div class="d-flex justify-content-center flex-wrap-reverse">
+                            <% artworks.forEach(artwork=> { %>
+                                <div class="art card" style="width: 18rem; margin: 2rem;">
+                                    <a href="artworks/<%= artwork.id%>">
+                                        <img class="card-img-top" src="<%= artwork.artworkImagePath %>"
+                                            alt="Card image cap">
+                                    <div class="art card-body">
+                                        <h4 class="card-title">
+                                            <%= artwork.title %>
+                                        </h4>
+                                    </div>
+                                </a>
+                                </div>
+                                <br>
+                                <% }) %>
+                        </div>
+                        <% } %>
 </div>

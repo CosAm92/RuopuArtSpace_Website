@@ -1,4 +1,4 @@
-<% if(isAdmin){ %> 
+<% if(isAdmin || (userRole == "Author")){ %> 
 <div class="container">
     <h1 class="mb-4">New artwork</h1>
     <form action="/artworks" method="POST">

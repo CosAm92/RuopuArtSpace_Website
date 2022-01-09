@@ -11,7 +11,7 @@
         <br>
         <a href="/articles?page=1&limit=3" role="button" class="btn btn-primary px-5">Back to All articles</a>
 
-        <% if(isAdmin){ %>
+        <% if(isAdmin || (userRole == "Author" && userId == article.author.email)){ %>
             <a href="/articles/edit/<%= article.id %>" class="btn btn-secondary">
                 Edit
             </a>
@@ -75,14 +75,39 @@
 
 
         <div>
+            <a id="copy" class="btn btn-dark" href="
+            <%if(fullURL){%>
+                <%= fullURL%>
+                <%}%>
+                ">
+                <i class="fa fa-share"></i></a>
             <a class="btn btn-dark" href="#!" role="button">
                 <i class="fa fa-weixin"></i></a>
-            <a class="btn btn-dark" href="#!" role="button">
+                <%if(fullURL){%>
+            <a class="btn btn-dark" href="https://twitter.com/share?url=<%= fullURL%>" role="button">
+                <!--&text=<TEXT>via=<USERNAME> or href="https://twitter.com/intent/tweet"-->
                 <i class="fa fa-twitter"></i></a>
-            <a class="btn btn-dark" href="#!" role="button">
+                <%}%>
+                <!--
+            <a class="btn btn-dark" href="https://www.linkedin.com/shareArticle?url=<URL>&title=<TITLE>&summary=<SUMMARY>&source=<SOURCE_URL>" role="button">
                 <i class="fa fa-linkedin"></i></a>
+            -->
+            
         </div>
     </div>
+
+    <script>
+        //Sharing by Copying URL to Clipboard
+        document.getElementById('copy').onclick = function (e) {
+            e.preventDefault();
+            var copyText = this.getAttribute('href');
+            document.addEventListener('copy', function(e) {
+               e.clipboardData.setData('text/plain', copyText);
+               e.preventDefault();
+            }, true);
+            document.execCommand('copy');
+          }
+    </script>
 
     <!--COMMENT SECTION-->
     <hr />

@@ -1,0 +1,12 @@
+<%if(isAdmin){ %> 
+<div class="container">
+    <h1 class="mb-4">New user</h1>
+    <form action="/users" method="POST">
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input required type="password" name="password" id="password" class="form-control">
+        </div>
+        <%- include('_form_fields') %>
+    </form>
+</div>
+<%} %> 

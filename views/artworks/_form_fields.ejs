@@ -3,19 +3,26 @@
         <label for="title">Title</label>
         <input required value="<%= artwork.title %>" type="text" name="title" id="title" class="form-control">
     </div>
+
+    <div>
+        <label for="author">Author</label>
+        <input value="<%= artwork.author %>" type="text" name="author" id="author" class="form-control">
+    </div>
+    <!--
     <div>
         <br>
         <label for="author">Author</label>
         <select name="author">
-            <% authors.forEach(author=> { %>
-                <% if(author.id==artwork.author){%>
-                    <option selected label="<%= author.name %>" value="<%= author.id %>"></option>
-                    <% } else { %>
-                        <option label="<%= author.name %>" value="<%= author.id %>"></option>
-                        <% } %>
-                            <% }) %>
+            <% //authors.forEach(author=> { %>
+                <%// if(author.id==artwork.author){%>
+                    <option selected label="<%//= author.name %>" value="<%//=author.id %>"></option>
+                    <% //} else { %>
+                        <option label="<%//= author.name %>" value="<%//= author.id %>"></option>
+                        <%// } %>
+                            <% //}) %>
         </select>
     </div>
+    -->
     <div>
         <label for="createdAt">Creation date</label>
         <input value="<%= artwork.createdAt == null ? '' : artwork.createdAt.toISOString().split('T')[0] %>" type="date"
@@ -115,5 +122,5 @@
     </div>
 </div>
 
-<a href="/artworks" class="btn btn-secondary">Cancel</a>
+<a href="/artworks?page=1&limit=3&title=" class="btn btn-secondary">Cancel</a>
 <button type="submit" class="btn btn-primary">Save</button>

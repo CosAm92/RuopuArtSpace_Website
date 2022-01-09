@@ -45,8 +45,10 @@ router.post('/login', async (req, res) => {
         !validPassword && res.status(404).json("Wrong password")
 
         session=req.session
+        session.user_id = user._id
         session.userId=user.email
         session.userIsAdmin= user.isAdmin
+        session.userRole = user.role
 
         res.redirect('/')
     } catch(e) {

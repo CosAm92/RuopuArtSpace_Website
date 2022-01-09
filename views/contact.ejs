@@ -1,6 +1,9 @@
 <div class="container">
     <h1>Contact Us!</h1>
-    <br>
+    <%if(msg){%>
+    <p style="color: #de6049;"><%- msg %> </p>
+<% } %>
+<br>
     <div class="d-flex">
         <!--
     <div class="form-group d-flex justify-content-between">
@@ -15,7 +18,7 @@
     </div>
     -->
         <div class="container">
-            <form method="POST" action="send">
+            <form method="POST" action="send"> <!--enctype="multipart/form-data"-->
             <div class="form-group">
                 <label for="email">Email</label>
                 <input required type="text" name="email" id="email" placeholder='example@qq.com' class="form-control">
@@ -28,6 +31,10 @@
                 <label for="message">Message</label>
                 <textarea class="form-control" name="message"
                     placeholder="Please write your message here..."></textarea>
+            </div>
+            <div>
+                <label for="attachment">Attachment:</label>
+                <input class="filepond" type="file" name="file" id="file">
             </div>
 
             </br>

@@ -8,8 +8,8 @@ const artworkSchema = new mongoose.Schema({
         required: true
     },
     author: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Author' //Must match the name of the model
+        type: String,
+        default: "Anonymous"
     },
     content: {
         type: String
@@ -45,7 +45,7 @@ return `data:${this.imageType};charset=utf-8;base64,${
     }
 })
 
-artworkSchema.index({title: 'text', content: 'text', theme: 'text', tags: 'text'})
+artworkSchema.index({title: 'text', content: 'text', theme: 'text', tags: 'text', author: 'text'})
 
 module.exports = mongoose.model('Artwork', artworkSchema)
 module.exports.artworkImageBasePath = artworkImageBasePath

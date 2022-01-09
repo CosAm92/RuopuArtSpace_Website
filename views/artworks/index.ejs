@@ -42,16 +42,19 @@
         <div class="input-group">
             <input type="text" name="title" class="form-control rounded" value="<%= searchOptions.title %>">
         </div>
+
+        <!--
         <label>Created At</label>
         <div class="input-group">
             <input type="date" name="createdAt" class="form-control rounded" value="<%= searchOptions.createdAt %>">
         </div>
+        -->
         <br>
         <button type="submit" class="btn btn-outline-primary">Search</button>
     </form>
 
     <br>
-    <div class="d-flex justify-content-center flex-wrap-reverse">
+    <div class="d-flex justify-content-center flex-wrap">
         <% artworks.forEach(artwork=> { %>
             <div class="card" style="width: 18rem; margin: 2rem;">
                 <a href="/artworks/<%= artwork.id%>" class="art-anchor">

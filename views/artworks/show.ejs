@@ -8,7 +8,7 @@
                 </div>
                     <div class="col text-center">
                     <h2>
-                        <%= artwork.title %> by <%= artwork.author.name %>
+                        <%= artwork.title %> by <%= artwork.author %>
                     </h2>
                     <h6><%= artwork.createdAt.toLocaleDateString() %></h6>
                     <h4>Theme - <%= artwork.theme%></h4>
@@ -18,13 +18,13 @@
                         possimus et aperiam quo quasi quos ad, nisi labore ipsum, recusandae, saepe laborum rem.
                         Assumenda sunt corrupti iure animi.</p>
                     
-                        <% if(isAdmin){ %> 
+                        <% if(isAdmin || (userRole == "Author")){ %> 
                             <br>
                         <a href="/artworks/<%=artwork.id%>/edit" class="btn btn-secondary">Edit</a>
                         <% } %> 
                 
                 <%- include('../partials/deleteForm', {url: `/artworks/${artwork.id}`, isAuthor: ''}) %> 
-                <a href="/artworks/<%=artwork.author.id%>" class="btn btn-primary">TODO: Go to Theme</a>
+            <!--<a href="/artworks/<%//=artwork.author.id%>" class="btn btn-primary">TODO: Go to Theme</a>-->
                 </div>
             </div>
         </div>

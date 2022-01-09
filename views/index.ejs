@@ -205,7 +205,7 @@
         id="wc1">
     <img style="width: 40rem; height: 18rem; border-radius: 10rem; left: 50%; top:50%" src="/images/girl.jpg" id="girl">
     <div class="text-center" id="text2">
-        <h3>Our Mission/Values</h3>
+        <h3 id="Val">Our Mission/Values</h3>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni quia cupiditate aliquid aut incidunt
             alias dolore quos doloribus.</p>
         <a id="btn" href="#" class="btn btn-primary">Learn More</a>
@@ -270,30 +270,29 @@
     <img class="art-img" src="/images/handRight2.png" style="width: fit-content; min-width: 10rem;">
 
     <div class="art-text">
-        <h3>Lorem ipsum</h3>
+        <h3>Show your creativity!</h3>
         <p> dolor sit amet, consectetur adipisicing elit. Magni quia cupiditate aliquid aut incidunt
             alias dolore quos doloribus.</p>
+            <div>
+                <a href="/artworks?page=1&limit=3&title=" class="btn btn-outline-dark" style="font-size: 2rem;"> See Gallery</a>
+            </div>
     </div>
     <div class="art-text">
         <!--<h3>Show your creativity!</h3>-->
-    </div>
-
-    <div style="text-align:center;" class="art-text">
-        <a href="/artworks?page=1&limit=3&title=" class="btn btn-outline-dark" style="font-size: 2rem;"> See Gallery</a>
     </div>
 </section>
 
 <!--MtT: Shows main employees of the NGO-->
 <br>
 <div class="container">
-    <h2 class="text-center"><b>Meet the Team</b></h2>
+    <h2 id="Team" class="text-center"><b>Meet the Team</b></h2>
     <p style="margin: 0% 20%;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic laborum quisquam nihil
         facere. Hic accusamus commodi qui, voluptas, error repudiandae magni eius quo eligendi vero aliquam unde, quasi
         dolor maxime?</p>
     <div class="d-flex justify-content-center flex-wrap">
-        <%var teamMembers=["Liu Ye", "Yang Yi" , "Qian Yuxi" , "Amanda Dieuaide" ]%>
-            <%var roles=["Director", "Deputy Director" , "Translator" , "Intern" ]%>
-                <%var Linlinks=["#", "#" , "#" , "https://www.linkedin.com/in/AmandaDieuaide" ]%>
+        <%var teamMembers=["Xiang Yang", "Yang Yi" , "Yuan Hao" , "Qian Yuxi" ] %> <!--//Liu Ye -->
+            <%var roles=["Director", "Deputy Director" , "Supervisor" , "Translator" ]%>
+                <%var Linlinks=["#", "#" , "#" , "#" ]%> <!--//https://www.linkedin.com/in/AmandaDieuaide-->
                     <%var Weilinks=["#", "#" , "#" , "#" ]%>
                         <% for(var i=0; i <teamMembers.length; i++ ) { %>
                             <div class="d-flex text-center flex-column" style="margin: 2rem;">
@@ -332,8 +331,8 @@
         wc2.style.top = value * 0.5 + 'px';
         wc3.style.top = value + 'px';
         wc3.style.left = value + 'px';
-        girl.style.top = '-' + value + 'px'
-        girl.style.left = '-' + value + 'px'
+        girl.style.top = value * 0.75 + 'px'
+        girl.style.right = '-' + value + 'px'
         //girl.style.right = value * 1.5 + 'px';
         //girl.style.bottom = value * 1.5+ 'px';
         wc1.style.top = value * 1.5 + 'px';

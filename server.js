@@ -10,7 +10,6 @@ const expressLayouts = require('express-ejs-layouts')
 
 const sessions = require('express-session')
 const nodemailer = require('nodemailer')
-
 const indexRouter = require('./routes/index')
 //const customRouter = require('./routes/custom') //Erase custom router file, it's useless
 const articleRouter = require('./routes/articles')
@@ -64,6 +63,8 @@ app.use(function (req, res, next) {
 app.use(function (req, res, next) {
     res.locals.userId = req.session.userId;
     res.locals.isAdmin = req.session.userIsAdmin;
+    res.locals.userRole = req.session.userRole;
+    res.locals.user_id = req.session.user_id
     //res.locals.searchQuery = {}
     next();
 });
@@ -80,10 +81,24 @@ app.get('/custom', (req, res) => {
 });
 
 //Contact
-app.get('/contact', (req, res) => {
-    res.render('contact')
+/*const multer = require('multer')
+const path = require('path')
+const storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, './public/uploads') //Doesnt work
+    },
+    filename: function (req, file, callback) {
+        callback(null, Date.now() + "-" + path.extname(file.originalname))
+    }
 })
-app.post('/send', (req, res) => {
+const upload = multer({storage: storage }).single("file")
+//Name of image input in Contact form
+*/
+app.get('/contact', (req, res) => {
+    res.render('contact', {msg: null})
+})
+
+app.post('/send', (req, res)=>{
     const output = `
     <p> New message </p>
     <ul>
@@ -119,7 +134,11 @@ app.post('/send', (req, res) => {
         subject: 'Node Contact Test', // Subject Name (Mail Name)
         // You can send text or HTML format, 2 chooses 1
         // Text:'Hello world?', // plain text
-        html: output // html
+        html: output /*, // html
+        attachments: [ //Array of objects
+            { filename: req.file.originalname,
+                path: req.file.path}
+        ]*/
     };
 
     // Execute Send
@@ -129,9 +148,21 @@ app.post('/send', (req, res) => {
         }
         console.log(`Message: ${info.messageId}`);
         console.log(`Sent: ${info.response}`);
-        res.render('contact')
-        //res.render('contact', { msg: 'Email has been sent' })
+
+
+        /*
+        fs.unlink(img_path,function(err){
+            if(err){
+                return res.end(err)
+            }else{
+                console.log("deleted")
+                return res.render('contact')
+            }
+          })*/
+        //res.render('contact')
+        res.render('contact', { msg: 'Email has been sent!' })
     });
+
 })
 
 app.listen(port, () => {
@@ -140,6 +171,5 @@ app.listen(port, () => {
 
 app.post('/search', indexRouter.searchAll)
 app.post('/tags', tagsRouter.searchTags)
-
 //app.use('/', indexRouter)
 //app.listen(process.env.PORT || 3000) //The server tells the PORT used, we put it at 3000

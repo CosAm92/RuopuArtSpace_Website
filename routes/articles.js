@@ -39,7 +39,7 @@ router.get('/:slug', async (req, res) => {
     }).
         populate({
             path: 'author',
-            select: 'pseudo -_id', //exclude id
+            select: 'pseudo email -_id', //exclude id
         }).
         populate({
             path: 'comments',
@@ -72,7 +72,10 @@ router.get('/:slug', async (req, res) => {
     const next = await Article.findOne({ _id: { $gt: article._id } }).sort({ _id: 1 }).limit(1)
 
     if (article == null) res.redirect('/articles') //If no articles are found, redirect to Articles
-    res.render('articles/show', { article: article, previous: previous, next: next })
+    
+    //Sharing
+    var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+    res.render('articles/show', { article: article, previous: previous, next: next, fullURL: fullUrl })
 })
 
 //Like an article
@@ -305,7 +308,7 @@ function renderArticle() {
                 path: 'comments',
                 populate: {
                     path: 'author',
-                    select: 'pseudo -_id', //exclude id
+                    select: 'pseudo email -_id', //exclude id
                 }
             }).
             populate({
@@ -316,8 +319,8 @@ function renderArticle() {
                 }
             })
             .exec()
-
-        res.redirect(`/articles/${article.slug}`)
+        
+            res.redirect(`/articles/${article.slug}`)
     }
 }
 
@@ -389,7 +392,10 @@ function paginationResults(model) {
         try {
             results.results = await model.find().sort({
                 createdAt: 'desc' //Top article = newest one
-            }).limit(limit).skip(startIndex).exec()
+            }).limit(limit).skip(startIndex).populate({
+                path: 'author',
+                select: 'pseudo email -_id', //exclude id
+            }).exec()
             res.paginationResults = results
             next()
         } catch (e) {

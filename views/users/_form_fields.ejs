@@ -1,0 +1,28 @@
+<div class="form-group">
+    <label for="pseudo">Pseudonym</label>
+    <input required type="text" name="pseudo" id="pseudo" class="form-control" value="<%= user.pseudo%>">
+</div>
+<div class="form-group">
+    <label for="email">Email</label>
+    <input required type="text" name="email" id="email" class="form-control" value="<%= user.email%>">
+</div>
+<div class="form-group">
+    <br>
+    <label for="role">Role</label>
+    <select name="role">
+        <% var roles=['User', 'Author' ] %>
+            <% roles.forEach(role=> { if(user.role == role){%>
+                <option selected label="<%= user.role %>" value="<%= user.role %>"></option>
+                <% } else { %>
+                    <option label="<%= role %>" value="<%= role%>"></option>
+                    <% }}); %>
+    </select>
+</div>
+
+<%if(isAdmin){%>
+<a href="/users?page=1&limit=3&name=" class="btn btn-secondary">Cancel</a>
+<%}%>
+<%if(user_id && (isAdmin == false)){%>
+    <a href="/users/<%- user_id%>" class="btn btn-secondary">Cancel</a>
+<%}%>
+<button type="submit" class="btn btn-primary">Save</button>
