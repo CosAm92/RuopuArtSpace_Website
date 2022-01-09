@@ -4,7 +4,7 @@
     "description": "Creation of a showcase website (PWA) for the NGO Ruopu Art Space.",
     "icons": [
       {
-        "src": "/images/splash-screen.png",
+        "src": "../images/splash-screen.png",
         "sizes": "512x512",
         "type": "image/png"
       }
