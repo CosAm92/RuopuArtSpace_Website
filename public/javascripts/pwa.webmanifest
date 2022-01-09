@@ -1,0 +1,16 @@
+{
+    "name": "ruopuartspace_website",
+    "short_name": "ras_pwa",
+    "description": "Creation of a showcase website (PWA) for the NGO Ruopu Art Space.",
+    "icons": [
+      {
+        "src": "/images/splash-screen.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "http://localhost:5001/",
+    "display": "fullscreen",
+    "theme_color": "#f3b782",
+    "background_color": "#e9edf1"
+  }

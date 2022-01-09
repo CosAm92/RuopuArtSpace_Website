@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="theme-color" content="#e9edf1"/>
+    <link rel="manifest" href="/javascripts/pwa.webmanifest" >
+    <link rel="apple-touch-icon" href="/images/apple-touch.png">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -22,6 +26,8 @@
 </head>
 
     <body>
+        <script src="/javascripts/pwa.js"></script>
+        <script src="/javascripts/status.js"></script>
         <%- include('../partials/header.ejs') %>
         <br>
         <%- include('../partials/errorMessage.ejs') %>
